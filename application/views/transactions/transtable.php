@@ -44,6 +44,7 @@
     </div>
 <!-- table div end-->
     <?php else: ?>
+        <br/>
         <ul><li>No Transactions</li></ul>
     <?php endif; ?>
     

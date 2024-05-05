@@ -58,31 +58,11 @@ if(isset($items) && !empty($items)){
                                         </div>
                                         
                                         <br class="visible-xs">
-                                        
-                                        <div class="col-sm-2 form-group-sm">
-                                            <input type="text" id="barcodeText" class="form-control" placeholder="item code" autofocus>
-                                            <span class="help-block errMsg" id="itemCodeNotFoundMsg"></span>
-                                        </div>
                                     </div>
                                     <!-- End of text to click to add another item to transaction-->
                                     <br>
                                     
                                     <div class="row">
-                                        <div class="col-sm-3 form-group-sm">
-                                            <label for="vat">VAT(%)</label>
-                                            <input type="number" min="0" id="vat" class="form-control" value="0">
-                                        </div>
-                                        
-                                        <div class="col-sm-3 form-group-sm">
-                                            <label for="discount">Discount(%)</label>
-                                            <input type="number" min="0" id="discount" class="form-control" value="0">
-                                        </div>
-                                        
-                                        <div class="col-sm-3 form-group-sm">
-                                            <label for="discount">Discount(value)</label>
-                                            <input type="number" min="0" id="discountValue" class="form-control" value="0">
-                                        </div>
-                                        
                                         <div class="col-sm-3 form-group-sm">
                                             <label for="modeOfPayment">Mode of Payment</label>
                                             <select class="form-control checkField" id="modeOfPayment">
@@ -148,13 +128,10 @@ if(isset($items) && !empty($items)){
 
                             <br>
                             <div class="row">
-                                <div class="col-sm-2 form-group-sm">
-                                    <button class="btn btn-primary btn-sm" id='useScanner'>Use Barcode Scanner</button>
-                                </div>
                                 <br class="visible-xs">
                                 <div class="col-sm-6"></div>
                                 <br class="visible-xs">
-                                <div class="col-sm-4 form-group-sm">
+                                <div class="col-sm-4 form-group-sm text-center">
                                     <button type="button" class="btn btn-primary btn-sm" id="confirmSaleOrder">Confirm Order</button>
                                     <button type="button" class="btn btn-danger btn-sm" id="cancelSaleOrder">Clear Order</button>
                                     <button type="button" class="btn btn-danger btn-sm" id="hideTransForm">Close</button>

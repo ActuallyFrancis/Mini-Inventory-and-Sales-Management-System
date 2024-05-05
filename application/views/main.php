@@ -209,13 +209,6 @@ defined('BASEPATH') or exit('');
     </div>
   </div>
 
-  <footer class="container-fluid text-center hidden-print">
-    <p>
-      <i class="fa fa-copyright"></i>
-      Copyright <a href="http://www.amirsanni.com">Amir Sanni</a> (2016 - <?= date('Y') ?>)
-    </p>
-  </footer>
-
   <!--Modal to show flash message-->
   <div id="flashMsgModal" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog">

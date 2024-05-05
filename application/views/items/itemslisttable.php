@@ -61,6 +61,7 @@
         </div>
         <!-- table div end-->
         <?php else: ?>
+        <br/>
         <ul><li>No items</li></ul>
         <?php endif; ?>
     </div>
