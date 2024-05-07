@@ -115,7 +115,7 @@ defined('BASEPATH') or exit('');
             <li class="<?= $pageTitle == 'Administrators' ? 'active' : '' ?>">
               <a href="<?= site_url('administrators') ?>">
                 <i class="fa fa-user"></i>
-                Admin Management
+                User Management
               </a>
             </li>
           <?php endif; ?>
@@ -188,7 +188,7 @@ defined('BASEPATH') or exit('');
             <li class="<?= $pageTitle == 'Administrators' ? 'active' : '' ?>">
               <a href="<?= site_url('administrators') ?>">
                 <i class="fa fa-user"></i>
-                Admin Management
+                User Management
               </a>
             </li>
           <?php endif; ?>
