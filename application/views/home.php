@@ -60,6 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div style="font-size:100px">
                                 <h1><img src="<?=base_url()?>public/images/logo_lts.png" alt="logo" height="150px"></h1>
                             </div>
+                            <h2 style="color: white">Light Track System</h2>
                         </div>
                     </div>
                     <div class="row">
