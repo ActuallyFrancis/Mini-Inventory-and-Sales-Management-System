@@ -401,23 +401,8 @@ $(document).ready(function () {
             }
 
 
-            return new Promise(function (resolve, reject) {
-                //calculate discount amount using the discount percentage
-                var discountAmount = getDiscountAmount(verifyCumAmount);//get discount amount
-
-                //display discount amount in discount(value) field
-                $("#discountValue").val(discountAmount.toFixed(2));
-
-                //now update verifyCumAmount by subtracting the discount amount from it
-                verifyCumAmount = +(verifyCumAmount - discountAmount).toFixed(2);
-
-                resolve();
-            }).then(function () {
-                //update verifyCumAmount by adding VAT
-                var vatAmount = getVatAmount(verifyCumAmount);//get vat amount
-
-                //now update verifyCumAmount by adding the amount of VAT to it
-                verifyCumAmount = +(verifyCumAmount + vatAmount).toFixed(2);
+            return new Promise(function () {
+                verifyCumAmount = cumAmount
 
                 //stop execution if cumAmount is wrong
                 if(verifyCumAmount !== cumAmount) {
@@ -782,23 +767,8 @@ function ceipacp() {
     });
 
     return new Promise(function (resolve, reject) {
-        //calculate discount amount using the discount percentage
-        var discountAmount = getDiscountAmount(cumulativePrice);//get discount amount
-
-        //display discount amount in discount(value) field
-        $("#discountValue").val(discountAmount.toFixed(2));
-
-        //now update verifyCumAmount by subtracting the discount amount from it
-        cumulativePrice = +(cumulativePrice - discountAmount).toFixed(2);
-
         resolve();
     }).then(function () {
-        //get vat amount
-        var vatAmount = getVatAmount(cumulativePrice);
-
-        //now update cumulativePrice by adding the amount of VAT to it
-        cumulativePrice = +(cumulativePrice + vatAmount).toFixed(2);
-
         //display the cumulative amount
         $("#cumAmount").html(cumulativePrice);
 
@@ -1006,42 +976,6 @@ function changeSelectedItemWithBarcodeText(barcodeTextElem, selectedItem) {
     //then remove the value from the input
     $(barcodeTextElem).val("");
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function getVatAmount(cumAmount) {
-    //update cumAmount by adding the amount VAT to it
-    var vatPercentage = $("#vat").val();//get vat percentage
-
-    //calculate the amount vat will be
-    var vatAmount = parseFloat((vatPercentage / 100) * cumAmount);
-
-    return vatAmount;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function getDiscountAmount(cumAmount) {
-    //update cumAmount by subtracting discount amount from it
-    var discountPercentage = $("#discount").val();//get discount percentage
-
-    //calculate the discount amount
-    var discountAmount = parseFloat((discountPercentage / 100) * cumAmount);
-
-    return discountAmount;
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

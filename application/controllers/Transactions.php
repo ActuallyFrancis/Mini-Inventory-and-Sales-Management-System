@@ -114,7 +114,7 @@ class Transactions extends CI_Controller
          * VAT (based on the vat percentage) and minus the $discount_percentage (if available)
          */
 
-    $allIsWell = $this->validateItemsDet($arrOfItemsDetails, $cumAmount, $_at, $vatPercentage, $discount_percentage);
+    $allIsWell = $this->validateItemsDet($arrOfItemsDetails, $cumAmount, $_at);
 
     if ($allIsWell) { //insert each sales order into db, generate receipt and return info to client
 
@@ -174,17 +174,18 @@ class Transactions extends CI_Controller
    * @param type $discount_percentage
    * @return boolean
    */
-  private function validateItemsDet($arrOfItemsInfo, $cumAmountFromClient, $amountTendered, $vatPercentage, $discount_percentage)
+  private function validateItemsDet($arrOfItemsInfo, $cumAmountFromClient, $amountTendered)
   {
     $error = 0;
-
+    
+    
     //loop through the item's info and validate each
     //return error if at least one seems suspicious (i.e. fails validation)
     foreach ($arrOfItemsInfo as $get) {
       $itemCode = $get->_iC; //use this to get the item's unit price, then multiply it with the qty sent from client
       $qtyToBuy = $get->qty;
       $unitPriceFromClient = $get->unitPrice;
-      $unitPriceInDb = $this->genmod->gettablecol('items', 'unitPrice', 'code', $itemCode);
+      $unitPriceInDb = $this->genmod->gettablecol('items', 'unitPrice', 'id', $itemCode);
       $totPriceFromClient = $get->totalPrice;
 
       //ensure both unit price matches
@@ -208,23 +209,6 @@ class Transactions extends CI_Controller
      */
 
     $expectedCumAmount = $this->total_before_discount;
-
-    //now calculate the discount amount (if there is discount) based on the discount percentage and subtract it(discount amount) 
-    //from $total_before_discount
-    if ($discount_percentage) {
-      $this->discount_amount = $this->getDiscountAmount($expectedCumAmount, $discount_percentage);
-
-      $expectedCumAmount = round($expectedCumAmount - $this->discount_amount, 2);
-    }
-
-    //add VAT amount to $expectedCumAmount is VAT percentage is set
-    if ($vatPercentage) {
-      //calculate vat amount using $vatPercentage and add it to $expectedTotPrice
-      $this->vat_amount = $this->getVatAmount($expectedCumAmount, $vatPercentage);
-
-      //now add the vat amount to expected total price
-      $expectedCumAmount = round($expectedCumAmount + $this->vat_amount, 2);
-    }
 
     //check if cum amount also matches and ensure amount tendered is not less than $expectedCumAmount
     if (($expectedCumAmount != $cumAmountFromClient) || ($expectedCumAmount > $amountTendered)) {
@@ -276,7 +260,7 @@ class Transactions extends CI_Controller
 
     foreach ($arrOfItemsDetails as $get) {
       $itemCode = $get->_iC;
-      $itemName = $this->genmod->getTableCol('items', 'name', 'code', $itemCode);
+      $itemName = $this->genmod->getTableCol('items', 'name', 'id', $itemCode);
       $qtySold = $get->qty; //qty selected for item in loop
       $unitPrice = $get->unitPrice; //unit price of item in loop
       $totalPrice = $get->totalPrice; //total price for item in loop
@@ -298,10 +282,6 @@ class Transactions extends CI_Controller
         $_mop,
         1,
         $ref,
-        $vatAmount,
-        $vatPercentage,
-        $discount_amount,
-        $discount_percentage,
         $cust_name,
         $cust_phone,
         $cust_email

@@ -192,7 +192,7 @@ class Items extends CI_Controller
     $itemCode = $this->input->get('_iC', TRUE);
 
     if ($itemCode) {
-      $item_info = $this->item->getItemInfo(['code' => $itemCode], ['quantity', 'unitPrice', 'description']);
+      $item_info = $this->item->getItemInfo(['id' => $itemCode], ['quantity', 'unitPrice', 'description']);
 
       if ($item_info) {
         $json['availQty'] = (int)$item_info->quantity;

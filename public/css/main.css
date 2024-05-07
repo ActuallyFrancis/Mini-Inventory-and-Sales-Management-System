@@ -166,7 +166,11 @@ body, .sidenav, select {
     background: #c19a6b !important;
 }
 
-select {
+select, .close {
+    color: black !important;
+}
+
+button>.close {
     color: black !important;
 }
 
