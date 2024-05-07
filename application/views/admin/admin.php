@@ -93,8 +93,8 @@ defined('BASEPATH') OR exit('');
                             <label for='role' class="control-label">Role</label>
                             <select class="form-control checkField" id='role'>
                                 <option value=''>Role</option>
-                                <option value='Super'>Super</option>
-                                <option value='Basic'>Basic</option>
+                                <option value='Super'>Admin</option>
+                                <option value='Basic'>Employee</option>
                             </select>
                             <span class="help-block errMsg" id="roleErr"></span>
                         </div>
