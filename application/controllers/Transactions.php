@@ -480,4 +480,33 @@ class Transactions extends CI_Controller
 
     $this->load->view('transactions/transReport', $data);
   }
+  
+  public function export($from_date, $to_date = '')
+  {
+    $this->genlib->ajaxOnly();
+    $this->load->dbutil();
+
+    $delimiter = ",";
+    $newline = "\r\n";
+
+    $from_date = $from_date;
+    $to_date = $to_date ? $to_date : date('Y-m-d');
+
+    $query = $this->transaction->getDateRangeResultFormat($from_date, $to_date);
+    log_message('error', gettype($query));
+      
+    $data = $this->dbutil->csv_from_result($query, $delimiter, $newline);
+    
+    $this->load->helper('file');
+
+    $file_name = "transactions_" . date('Y-m-d_H-i-s') . ".csv";
+
+    write_file("public/exported_files/$file_name", $data);
+
+    $json['status'] = 1;
+    $json['msg'] = "Exported successfully as $file_name";
+    $json['file_name'] = $file_name;
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($json));
+  }
 }

@@ -11,6 +11,7 @@ $total_earned = 0;
 ?>
 <!DOCTYPE HTML>
 <html>
+
     <head>
         <title>Transaction Report</title>
 		
@@ -21,7 +22,9 @@ $total_earned = 0;
         <!--- LOAD FILES -->
         <?php if((stristr($_SERVER['HTTP_HOST'], "localhost") !== FALSE) || (stristr($_SERVER['HTTP_HOST'], "192.168.") !== FALSE)|| (stristr($_SERVER['HTTP_HOST'], "127.0.0.") !== FALSE)): ?>
         <link rel="stylesheet" href="<?=base_url()?>public/bootstrap/css/bootstrap.min.css">
-
+            <script src="<?=base_url()?>public/js/jquery.min.js"></script>
+            <script src="<?=base_url()?>public/bootstrap/js/bootstrap.min.js"></script>
+        
         <?php else: ?>
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -36,7 +39,7 @@ $total_earned = 0;
         <div class="container margin-top-5">
             <div class="row">
                 <div class="col-xs-12 text-right hidden-print">
-                    <button class="btn btn-primary btn-sm" onclick="window.print()">Print Report</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportCsv('<?= $from ?>', '<?= $to ?>')">Export CSV</button>
                 </div>
             </div>
             
@@ -111,4 +114,6 @@ $total_earned = 0;
         </div>
         <!--- panel end-->
     </body>
+    <script src="<?=base_url()?>public/js/main.js"></script>
+    <script src="<?=base_url()?>public/js/exportCsvReport.js"></script>
 </html>

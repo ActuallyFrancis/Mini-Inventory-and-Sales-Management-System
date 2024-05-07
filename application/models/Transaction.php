@@ -331,4 +331,43 @@ class Transaction extends CI_Model {
         
         return $run_q->num_rows() ? $run_q->result() : FALSE;
     }
+
+    public function getDateRangeResultFormat($from_date, $to_date){
+        if ($this->db->platform() == "sqlite3") {
+            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+                transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
+                admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
+                transactions.cust_name, transactions.cust_phone, transactions.cust_email
+                FROM transactions
+                LEFT OUTER JOIN admin ON transactions.staffId = admin.id
+                WHERE 
+                date(transactions.transDate) >= {$from_date} AND date(transactions.transDate) <= {$to_date}
+                GROUP BY ref
+                ORDER BY transactions.transDate DESC";
+
+            $run_q = $this->db->query($q);
+        }
+
+        else {
+            $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+                    transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
+                    CONCAT_WS(" ", admin.first_name, admin.last_name) AS "staffName",
+                    transactions.cust_name, transactions.cust_phone, transactions.cust_email');
+
+            $this->db->select_sum('transactions.quantity');
+
+            $this->db->join('admin', 'transactions.staffId = admin.id', 'LEFT');
+
+            $this->db->where("DATE(transactions.transDate) >= ", $from_date);
+            $this->db->where("DATE(transactions.transDate) <= ", $to_date);
+
+            $this->db->order_by('transactions.transDate', 'DESC');
+
+            $this->db->group_by('ref');
+
+            $run_q = $this->db->get('transactions');
+        }
+
+        return $run_q->num_rows() ? $run_q : FALSE;
+    }
 }
