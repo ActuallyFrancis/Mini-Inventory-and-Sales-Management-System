@@ -48,11 +48,10 @@ class Item extends CI_Model{
      * @param type $itemQuantity
      * @param type $itemPrice
      * @param type $itemDescription
-     * @param type $itemCode
      * @return boolean
      */
-    public function add($itemName, $itemQuantity, $itemPrice, $itemDescription, $itemCode){
-        $data = ['name'=>$itemName, 'quantity'=>$itemQuantity, 'unitPrice'=>$itemPrice, 'description'=>$itemDescription, 'code'=>$itemCode];
+    public function add($itemName, $itemQuantity, $itemPrice, $itemDescription){
+        $data = ['name'=>$itemName, 'quantity'=>$itemQuantity, 'unitPrice'=>$itemPrice, 'description'=>$itemDescription];
                 
         //set the datetime based on the db driver in use
         $this->db->platform() == "sqlite3" 
@@ -140,10 +139,10 @@ class Item extends CI_Model{
     ********************************************************************************************************************************
     */
     
-    public function decrementItem($itemCode, $numberToRemove){
-        $q = "UPDATE items SET quantity = quantity - ? WHERE code = ?";
+    public function decrementItem($itemId, $numberToRemove){
+        $q = "UPDATE items SET quantity = quantity - ? WHERE id = ?";
         
-        $this->db->query($q, [$numberToRemove, $itemCode]);
+        $this->db->query($q, [$numberToRemove, $itemId]);
         
         if($this->db->affected_rows() > 0){
             return TRUE;

@@ -11,9 +11,8 @@ defined('BASEPATH') OR exit('');
         <br class="visible-xs">
         
         <div class="col-sm-6">
-            <button class="btn btn-info" id="importdb">Import Data</button>
-            <span class="help-block">File must be of type .sqlite</span>
-            <input type="file" id="selecteddbfile" class="hidden" accept=".sqlite">
+            <button class="btn btn-info" id="importdb">Import CSV Data</button>
+            <input type="file" id="selecteddbfile" class="hidden" accept=".csv">
             <span class="help-block" id="dbFileMsg"></span>
         </div>
     </div>

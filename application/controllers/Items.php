@@ -105,12 +105,6 @@ class Items extends CI_Controller
     );
     $this->form_validation->set_rules('itemQuantity', 'Item quantity', ['required', 'trim', 'numeric'], ['required' => "required"]);
     $this->form_validation->set_rules('itemPrice', 'Item Price', ['required', 'trim', 'numeric'], ['required' => "required"]);
-    $this->form_validation->set_rules(
-      'itemCode',
-      'Item Code',
-      ['required', 'trim', 'max_length[20]', 'is_unique[items.code]'],
-      ['required' => "required", 'is_unique' => "There is already an item with this code"]
-    );
 
     if ($this->form_validation->run() !== FALSE) {
       $this->db->trans_start(); //start transaction
@@ -123,8 +117,7 @@ class Items extends CI_Controller
         set_value('itemName'),
         set_value('itemQuantity'),
         set_value('itemPrice'),
-        set_value('itemDescription'),
-        set_value('itemCode')
+        set_value('itemDescription')
       );
 
       $itemName = set_value('itemName');
@@ -300,10 +293,6 @@ class Items extends CI_Controller
       'required', 'trim',
       'callback_crosscheckName[' . $this->input->post('_iId', TRUE) . ']'
     ], ['required' => 'required']);
-    $this->form_validation->set_rules('itemCode', 'Item Code', [
-      'required', 'trim',
-      'callback_crosscheckCode[' . $this->input->post('_iId', TRUE) . ']'
-    ], ['required' => 'required']);
     $this->form_validation->set_rules('itemPrice', 'Item Unit Price', ['required', 'trim', 'numeric']);
     $this->form_validation->set_rules('itemDesc', 'Item Description', ['trim']);
 
@@ -312,7 +301,6 @@ class Items extends CI_Controller
       $itemDesc = set_value('itemDesc');
       $itemPrice = set_value('itemPrice');
       $itemName = set_value('itemName');
-      $itemCode = $this->input->post('itemCode', TRUE);
 
       //update item in db
       $updated = $this->item->edit($itemId, $itemName, $itemDesc, $itemPrice);
@@ -321,7 +309,7 @@ class Items extends CI_Controller
 
       //add event to log
       //function header: addevent($event, $eventRowId, $eventDesc, $eventTable, $staffId)
-      $desc = "Details of item with code '$itemCode' was updated";
+      $desc = "Details of item with code '$itemId' was updated";
 
       $this->genmod->addevent("Item Update", $itemId, $desc, 'items', $this->session->admin_id);
     } else {

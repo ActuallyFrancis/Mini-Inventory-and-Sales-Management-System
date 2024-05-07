@@ -77,7 +77,6 @@ class Misc extends CI_Controller
   public function importdb()
   {
     $this->genlib->checkLogin();
-
     $this->genlib->superOnly();
 
     //create a copy of the db file currently in the sqlite dir for keep in case something go wrong
@@ -86,14 +85,13 @@ class Misc extends CI_Controller
     }
 
     $config['upload_path'] = BASEPATH . "sqlite/"; //db files are stored in the basepath
-    $config['allowed_types'] = 'sqlite';
+    $config['allowed_types'] = 'csv|txt';
     $config['file_ext_tolower'] = TRUE;
-    $config['file_name'] = "1410inventory.sqlite";
+    $config['file_name'] = "import.csv";
     $config['max_size'] = 2000; //in kb
     $config['overwrite'] = TRUE; //overwrite the previous file
 
     $this->load->library('upload', $config); //load CI's 'upload' library
-
     $this->upload->initialize($config, TRUE);
 
     if ($this->upload->do_upload('dbfile') == FALSE) {

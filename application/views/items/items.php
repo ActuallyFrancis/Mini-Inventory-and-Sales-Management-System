@@ -32,11 +32,9 @@ defined('BASEPATH') OR exit('');
                         <label for="itemsListSortBy">Sort by</label>
                         <select id="itemsListSortBy" class="form-control">
                             <option value="name-ASC">Item Name (A-Z)</option>
-                            <option value="code-ASC">Item Code (Ascending)</option>
                             <option value="unitPrice-DESC">Unit Price (Highest first)</option>
                             <option value="quantity-DESC">Quantity (Highest first)</option>
                             <option value="name-DESC">Item Name (Z-A)</option>
-                            <option value="code-DESC">Item Code (Descending)</option>
                             <option value="unitPrice-ASC">Unit Price (lowest first)</option>
                             <option value="quantity-ASC">Quantity (lowest first)</option>
                         </select>
@@ -60,21 +58,14 @@ defined('BASEPATH') OR exit('');
             <!--Form to add/update an item-->
             <div class="col-sm-4 hidden" id='createNewItemDiv'>
                 <div class="well">
-                    <button class="close cancelAddItem">&times;</button><br>
+                    <div style="display: flex;">
+                        <h4>Add New Item</h4>
+                        <button class="close cancelAddItem" style="text-align:end;flex:auto;">&times;</button><br>
+                    </div>
                     <form name="addNewItemForm" id="addNewItemForm" role="form">
                         <div class="text-center errMsg" id='addCustErrMsg'></div>
                         
                         <br>
-                        
-                        <div class="row">
-                            <div class="col-sm-12 form-group-sm">
-                                <label for="itemCode">Item Code</label>
-                                <input type="text" id="itemCode" name="itemCode" placeholder="Item Code" maxlength="80"
-                                    class="form-control" onchange="checkField(this.value, 'itemCodeErr')" autofocus>
-                                <!--<span class="help-block"><input type="checkbox" id="gen4me"> auto-generate</span>-->
-                                <span class="help-block errMsg" id="itemCodeErr"></span>
-                            </div>
-                        </div>
                         
                         <div class="row">
                             <div class="col-sm-12 form-group-sm">
@@ -224,12 +215,6 @@ defined('BASEPATH') OR exit('');
                             <label for="itemNameEdit">Item Name</label>
                             <input type="text" id="itemNameEdit" placeholder="Item Name" autofocus class="form-control checkField">
                             <span class="help-block errMsg" id="itemNameEditErr"></span>
-                        </div>
-                        
-                        <div class="col-sm-4 form-group-sm">
-                            <label for="itemCode">Item Code</label>
-                            <input type="text" id="itemCodeEdit" class="form-control">
-                            <span class="help-block errMsg" id="itemCodeEditErr"></span>
                         </div>
                         
                         <div class="col-sm-4 form-group-sm">

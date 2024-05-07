@@ -17,7 +17,6 @@
                     <tr>
                         <th>SN</th>
                         <th>ITEM NAME</th>
-                        <th>ITEM CODE</th>
                         <th>DESCRIPTION</th>
                         <th>QTY IN STOCK</th>
                         <th>UNIT PRICE</th>
@@ -34,7 +33,6 @@
                         <input type="hidden" value="<?=$get->id?>" class="curItemId">
                         <th class="itemSN"><?=$sn?>.</th>
                         <td><span id="itemName-<?=$get->id?>"><?=$get->name?></span></td>
-                        <td><span id="itemCode-<?=$get->id?>"><?=$get->code?></td>
                         <td>
                             <span id="itemDesc-<?=$get->id?>" data-toggle="tooltip" title="<?=$get->description?>" data-placement="auto">
                                 <?=word_limiter($get->description, 15)?>
@@ -44,9 +42,9 @@
                             <span id="itemQuantity-<?=$get->id?>"><?=$get->quantity?></span>
                         </td>
                         <td>₱<span id="itemPrice-<?=$get->id?>"><?=number_format($get->unitPrice, 2)?></span></td>
-                        <td><?=$this->genmod->gettablecol('transactions', 'SUM(quantity)', 'itemCode', $get->code)?></td>
+                        <td><?=$this->genmod->gettablecol('transactions', 'SUM(quantity)', 'itemCode', $get->id)?></td>
                         <td>
-                            ₱<?=number_format($this->genmod->gettablecol('transactions', 'SUM(totalPrice)', 'itemCode', $get->code), 2)?>
+                            ₱<?=number_format($this->genmod->gettablecol('transactions', 'SUM(totalPrice)', 'itemCode', $get->id), 2)?>
                         </td>
                         <td><a class="pointer updateStock" id="stock-<?=$get->id?>">Update Quantity</a></td>
                         <td class="text-center text-primary">

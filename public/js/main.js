@@ -107,7 +107,7 @@ $(document).ready(function(){
             
             formData.append('dbfile', file);
             
-            $("#dbFileMsg").css('color', 'black').html("Importing database");
+            $("#dbFileMsg").css('color', 'black').html("Importing CSV file");
             
             $.ajax({
                 url: appRoot+"misc/importdb",
@@ -122,7 +122,7 @@ $(document).ready(function(){
                 
                 if(rd.status === 1){
                     //display success message
-                    $("#dbFileMsg").css('color', 'green').html("Database successfully imported");
+                    $("#dbFileMsg").css('color', 'green').html("CSV file successfully imported");
                     
                     //clear the success msg after a while
                     setTimeout(function(){$("#dbFileMsg").html("");}, 3000);
@@ -133,7 +133,7 @@ $(document).ready(function(){
                     $("#dbFileMsg").css('color', 'red').html(rd.msg);
                 }
             }).fail(function(){
-                
+                console.log("An error occurred");
             });
         }
     });

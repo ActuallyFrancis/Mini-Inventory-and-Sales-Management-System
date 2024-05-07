@@ -94,19 +94,17 @@ $(document).ready(function(){
     $("#addNewItem").click(function(e){
         e.preventDefault();
         
-        changeInnerHTML(['itemNameErr', 'itemQuantityErr', 'itemPriceErr', 'itemCodeErr', 'addCustErrMsg'], "");
+        changeInnerHTML(['itemNameErr', 'itemQuantityErr', 'itemPriceErr', 'addCustErrMsg'], "");
         
         var itemName = $("#itemName").val();
         var itemQuantity = $("#itemQuantity").val();
         var itemPrice = $("#itemPrice").val().replace(",", "");
-        var itemCode = $("#itemCode").val();
         var itemDescription = $("#itemDescription").val();
         
-        if(!itemName || !itemQuantity || !itemPrice || !itemCode){
+        if(!itemName || !itemQuantity || !itemPrice){
             !itemName ? $("#itemNameErr").text("required") : "";
             !itemQuantity ? $("#itemQuantityErr").text("required") : "";
             !itemPrice ? $("#itemPriceErr").text("required") : "";
-            !itemCode ? $("#itemCodeErr").text("required") : "";
             
             $("#addCustErrMsg").text("One or more required fields are empty");
             
@@ -118,7 +116,7 @@ $(document).ready(function(){
         $.ajax({
             type: "post",
             url: appRoot+"items/add",
-            data:{itemName:itemName, itemQuantity:itemQuantity, itemPrice:itemPrice, itemDescription:itemDescription, itemCode:itemCode},
+            data:{itemName:itemName, itemQuantity:itemQuantity, itemPrice:itemPrice, itemDescription:itemDescription},
             
             success: function(returnedData){
                 if(returnedData.status === 1){
@@ -127,9 +125,6 @@ $(document).ready(function(){
                     
                     //refresh the items list table
                     lilt();
-                    
-                    //return focus to item code input to allow adding item with barcode scanner
-                    $("#itemCode").focus();
                 }
                 
                 else{
@@ -138,7 +133,6 @@ $(document).ready(function(){
                     //display all errors
                     $("#itemNameErr").text(returnedData.itemName);
                     $("#itemPriceErr").text(returnedData.itemPrice);
-                    $("#itemCodeErr").text(returnedData.itemCode);
                     $("#itemQuantityErr").text(returnedData.itemQuantity);
                     $("#addCustErrMsg").text(returnedData.msg);
                 }
@@ -150,7 +144,7 @@ $(document).ready(function(){
                 }
 
                 else{
-                    changeFlashMsgContent("Unable to process your request at this time. Pls try again later!", "", "red", "");
+                    changeFlashMsgContent("Unable to process your request at this time. Please try again later!", "", "red", "");
                 }
             }
         });
@@ -211,19 +205,16 @@ $(document).ready(function(){
         var itemDesc = $("#itemDesc-"+itemId).attr('title');
         var itemName = $("#itemName-"+itemId).html();
         var itemPrice = $("#itemPrice-"+itemId).html().split(".")[0].replace(",", "");
-        var itemCode = $("#itemCode-"+itemId).html();
         
         //prefill form with info
         $("#itemIdEdit").val(itemId);
         $("#itemNameEdit").val(itemName);
-        $("#itemCodeEdit").val(itemCode);
         $("#itemPriceEdit").val(itemPrice);
         $("#itemDescriptionEdit").val(itemDesc);
         
         //remove all error messages that might exist
         $("#editItemFMsg").html("");
         $("#itemNameEditErr").html("");
-        $("#itemCodeEditErr").html("");
         $("#itemPriceEditErr").html("");
         
         //launch modal
