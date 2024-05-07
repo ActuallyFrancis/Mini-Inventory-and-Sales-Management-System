@@ -332,10 +332,6 @@ class Transactions extends CI_Controller
    * @param type $ref
    * @param type $transDate
    * @param type $_mop
-   * @param type $vatAmount
-   * @param type $vatPercentage
-   * @param type $discount_amount
-   * @param type $discount_percentage
    * @param type $cust_name
    * @param type $cust_phone
    * @param type $cust_email
@@ -349,10 +345,6 @@ class Transactions extends CI_Controller
     $ref,
     $transDate,
     $_mop,
-    $vatAmount,
-    $vatPercentage,
-    $discount_amount,
-    $discount_percentage,
     $cust_name,
     $cust_phone,
     $cust_email
@@ -364,10 +356,6 @@ class Transactions extends CI_Controller
     $data['ref'] = $ref;
     $data['transDate'] = $transDate;
     $data['_mop'] = $_mop;
-    $data['vatAmount'] = $vatAmount;
-    $data['vatPercentage'] = $vatPercentage;
-    $data['discountAmount'] = $discount_amount;
-    $data['discountPercentage'] = $discount_percentage;
     $data['cust_name'] = $cust_name;
     $data['cust_phone'] = $cust_phone;
     $data['cust_email'] = $cust_email;
@@ -409,10 +397,6 @@ class Transactions extends CI_Controller
       $changeDue = $transInfo[0]['changeDue'];
       $transDate = $transInfo[0]['transDate'];
       $modeOfPayment = $transInfo[0]['modeOfPayment'];
-      $vatAmount = $transInfo[0]['vatAmount'];
-      $vatPercentage = $transInfo[0]['vatPercentage'];
-      $discountAmount = $transInfo[0]['discount_amount'];
-      $discountPercentage = $transInfo[0]['discount_percentage'];
       $cust_name = $transInfo[0]['cust_name'];
       $cust_phone = $transInfo[0]['cust_phone'];
       $cust_email = $transInfo[0]['cust_email'];
@@ -425,10 +409,6 @@ class Transactions extends CI_Controller
         $ref,
         $transDate,
         $modeOfPayment,
-        $vatAmount,
-        $vatPercentage,
-        $discountAmount,
-        $discountPercentage,
         $cust_name,
         $cust_phone,
         $cust_email

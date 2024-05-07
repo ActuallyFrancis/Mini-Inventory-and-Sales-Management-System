@@ -6,9 +6,10 @@ defined('BASEPATH') OR exit('');
 <div id="transReceiptToPrint">
     <div class="row">
         <div class="col-xs-12 text-center text-uppercase">
-            <center style='margin-bottom:5px'><img src="<?=base_url()?>public/images/receipt_logo.png" alt="logo" class="img-responsive" width="60px"></center>
-            <b>1410 Store, plot 5, block 2</b>
-            <div>+234 7086201801, +234 7030167606</div>
+            <center style='margin-bottom:5px'><img src="<?=base_url()?>public/images/logo_full.png" alt="logo" class="img-responsive" width="60px"></center>
+            <b>Company Name</b><br>
+            <b>Address</b>
+            <div>Mobile Number</div>
         </div>
     </div>
     <div class="row text-center">
@@ -45,21 +46,7 @@ defined('BASEPATH') OR exit('');
             <b>Total: ₱<?=isset($init_total) ? number_format($init_total, 2) : 0?></b>
         </div>
     </div>
-    <hr style='margin-top:2px; margin-bottom:0px'>      
-    <div class="row">
-        <div class="col-xs-12 text-right">
-            <b>Discount(<?=$discountPercentage?>%): ₱<?=isset($discountAmount) ? number_format($discountAmount, 2) : 0?></b>
-        </div>
-    </div>       
-    <div class="row">
-        <div class="col-xs-12 text-right">
-            <?php if($vatPercentage > 0): ?>
-            <b>VAT(<?=$vatPercentage?>%): ₱<?=isset($vatAmount) ? number_format($vatAmount, 2) : ""?></b>
-            <?php else: ?>
-            VAT inclusive
-            <?php endif; ?>
-        </div>
-    </div>      
+    <hr style='margin-top:2px; margin-bottom:0px'>
     <div class="row">
         <div class="col-xs-12 text-right">
             <b>FINAL TOTAL: ₱<?=isset($cumAmount) ? number_format($cumAmount, 2) : ""?></b>
