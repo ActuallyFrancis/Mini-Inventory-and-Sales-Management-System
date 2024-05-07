@@ -148,11 +148,6 @@ defined('BASEPATH') OR exit('');
                         </div>
                         
                         <div class="col-sm-4 form-group-sm">
-                            <label>Item Code</label>
-                            <input type="text" readonly id="stockUpdateItemCode" class="form-control">
-                        </div>
-                        
-                        <div class="col-sm-4 form-group-sm">
                             <label>Quantity in Stock</label>
                             <input type="text" readonly id="stockUpdateItemQInStock" class="form-control">
                         </div>
@@ -163,8 +158,8 @@ defined('BASEPATH') OR exit('');
                             <label for="stockUpdateType">Update Type</label>
                             <select id="stockUpdateType" class="form-control checkField">
                                 <option value="">---</option>
-                                <option value="newStock">New Stock</option>
-                                <option value="deficit">Deficit</option>
+                                <option value="newStock">Add Stock</option>
+                                <option value="deficit">Reduce Stock</option>
                             </select>
                             <span class="help-block errMsg" id="stockUpdateTypeErr"></span>
                         </div>
@@ -215,6 +210,12 @@ defined('BASEPATH') OR exit('');
                             <label for="itemNameEdit">Item Name</label>
                             <input type="text" id="itemNameEdit" placeholder="Item Name" autofocus class="form-control checkField">
                             <span class="help-block errMsg" id="itemNameEditErr"></span>
+                        </div>
+                        
+                        <div class="col-sm-4 form-group-sm">
+                            <label for="itemQuantityEdit">Quantity</label>
+                            <input type="number" id="itemQuantityEdit" placeholder="Available Quantity" class="form-control checkField" min="0">
+                            <span class="help-block errMsg" id="itemQuantityEditErr"></span>
                         </div>
                         
                         <div class="col-sm-4 form-group-sm">

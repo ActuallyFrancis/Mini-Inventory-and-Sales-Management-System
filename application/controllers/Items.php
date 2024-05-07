@@ -300,10 +300,11 @@ class Items extends CI_Controller
       $itemId = set_value('_iId');
       $itemDesc = set_value('itemDesc');
       $itemPrice = set_value('itemPrice');
-      $itemName = set_value('itemName');
+      $itemName = urldecode(set_value('itemName'));
+      $itemAmount = set_value('itemAmount');
 
       //update item in db
-      $updated = $this->item->edit($itemId, $itemName, $itemDesc, $itemPrice);
+      $updated = $this->item->edit($itemId, $itemName, $itemDesc, $itemPrice, $itemAmount);
 
       $json['status'] = $updated ? 1 : 0;
 

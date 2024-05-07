@@ -205,11 +205,13 @@ $(document).ready(function(){
         var itemDesc = $("#itemDesc-"+itemId).attr('title');
         var itemName = $("#itemName-"+itemId).html();
         var itemPrice = $("#itemPrice-"+itemId).html().split(".")[0].replace(",", "");
+        var itemQuantity = $("#itemQuantity-"+itemId).html();
         
         //prefill form with info
         $("#itemIdEdit").val(itemId);
         $("#itemNameEdit").val(itemName);
         $("#itemPriceEdit").val(itemPrice);
+        $("#itemQuantityEdit").val(itemQuantity);
         $("#itemDescriptionEdit").val(itemDesc);
         
         //remove all error messages that might exist
@@ -232,12 +234,13 @@ $(document).ready(function(){
         var itemPrice = $("#itemPriceEdit").val();
         var itemDesc = $("#itemDescriptionEdit").val();
         var itemId = $("#itemIdEdit").val();
-        var itemCode = $("#itemCodeEdit").val();
+        var itemAmount = $("#itemQuantityEdit").val();
         
-        if(!itemName || !itemPrice || !itemId){
+        if(!itemName || !itemPrice || !itemId ){
             !itemName ? $("#itemNameEditErr").html("Item name cannot be empty") : "";
             !itemPrice ? $("#itemPriceEditErr").html("Item price cannot be empty") : "";
             !itemId ? $("#editItemFMsg").html("Unknown item") : "";
+            
             return;
         }
         
@@ -246,7 +249,7 @@ $(document).ready(function(){
         $.ajax({
             method: "POST",
             url: appRoot+"items/edit",
-            data: {itemName:itemName, itemPrice:itemPrice, itemDesc:itemDesc, _iId:itemId, itemCode:itemCode}
+            data: {itemName:itemName, itemPrice:itemPrice, itemDesc:itemDesc, _iId:itemId, itemAmount:itemAmount}
         }).done(function(returnedData){
             if(returnedData.status === 1){
                 $("#editItemFMsg").css('color', 'green').html("Item successfully updated");
@@ -262,8 +265,8 @@ $(document).ready(function(){
                 $("#editItemFMsg").css('color', 'red').html("One or more required fields are empty or not properly filled");
                 
                 $("#itemNameEditErr").html(returnedData.itemName);
-                $("#itemCodeEditErr").html(returnedData.itemCode);
                 $("#itemPriceEditErr").html(returnedData.itemPrice);
+                $("#itemQuantityEditErr").html(returnedData.itemAmount);
             }
         }).fail(function(){
             $("#editItemFMsg").css('color', 'red').html("Unable to process your request at this time. Please check your internet connection and try again");
