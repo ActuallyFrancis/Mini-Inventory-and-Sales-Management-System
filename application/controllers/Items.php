@@ -105,6 +105,7 @@ class Items extends CI_Controller
     );
     $this->form_validation->set_rules('itemQuantity', 'Item quantity', ['required', 'trim', 'numeric'], ['required' => "required"]);
     $this->form_validation->set_rules('itemPrice', 'Item Price', ['required', 'trim', 'numeric'], ['required' => "required"]);
+    $this->form_validation->set_rules('itemCategory', 'Item Category', ['required', 'trim'], ['required' => "required"]);
 
     if ($this->form_validation->run() !== FALSE) {
       $this->db->trans_start(); //start transaction
@@ -117,7 +118,8 @@ class Items extends CI_Controller
         set_value('itemName'),
         set_value('itemQuantity'),
         set_value('itemPrice'),
-        set_value('itemDescription')
+        set_value('itemDescription'),
+        set_value('itemCategory')
       );
 
       $itemName = set_value('itemName');

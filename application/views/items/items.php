@@ -78,6 +78,15 @@ defined('BASEPATH') OR exit('');
 
                         <div class="row">
                             <div class="col-sm-12 form-group-sm">
+                                <label for="itemCategory">Item Category</label>
+                                <input type="text" id="itemCategory" name="itemCategory" placeholder="Item Category" maxlength="80"
+                                       class="form-control" onchange="checkField(this.value, 'itemCategory')">
+                                <span class="help-block errMsg" id="itemCategoryErr"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 form-group-sm">
                                 <label for="itemQuantity">Quantity</label>
                                 <input type="number" id="itemQuantity" name="itemQuantity" placeholder="Available Quantity"
                                     class="form-control" min="0" onchange="checkField(this.value, 'itemQuantityErr')">

@@ -100,14 +100,15 @@ $(document).ready(function(){
         var itemQuantity = $("#itemQuantity").val();
         var itemPrice = $("#itemPrice").val().replace(",", "");
         var itemDescription = $("#itemDescription").val();
+        var itemCategory = $("#itemCategory").val();
         
-        if(!itemName || !itemQuantity || !itemPrice){
+        if(!itemName || !itemQuantity || !itemPrice || !itemCategory){
             !itemName ? $("#itemNameErr").text("required") : "";
             !itemQuantity ? $("#itemQuantityErr").text("required") : "";
             !itemPrice ? $("#itemPriceErr").text("required") : "";
+            !itemCategory ? $("#itemCategoryErr").text("required") : "";
             
             $("#addCustErrMsg").text("One or more required fields are empty");
-            
             return;
         }
         
@@ -116,7 +117,7 @@ $(document).ready(function(){
         $.ajax({
             type: "post",
             url: appRoot+"items/add",
-            data:{itemName:itemName, itemQuantity:itemQuantity, itemPrice:itemPrice, itemDescription:itemDescription},
+            data:{itemName:itemName, itemQuantity:itemQuantity, itemPrice:itemPrice, itemDescription:itemDescription, itemCategory:itemCategory},
             
             success: function(returnedData){
                 if(returnedData.status === 1){
