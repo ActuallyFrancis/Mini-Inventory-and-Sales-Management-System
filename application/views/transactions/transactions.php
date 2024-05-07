@@ -5,7 +5,7 @@ $current_items = [];
 
 if(isset($items) && !empty($items)){    
     foreach($items as $get){
-        $current_items[$get->code] = $get->name;
+        $current_items[$get->id] = $get->name;
     }
 }
 ?>
