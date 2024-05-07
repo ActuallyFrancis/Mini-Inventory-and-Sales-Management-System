@@ -100,6 +100,32 @@ class Misc extends CI_Controller
     } else {
       $json['status'] = 1;
     }
+    
+    // Open the file for reading
+    $file = fopen(BASEPATH . "sqlite/import.csv", 'r');
+    
+    // Extract the semicolon separated data ([0] is name, and [1] is price)
+    while (($line = fgetcsv($file)) !== FALSE) {
+        
+      log_message("info", "Extracting data from CSV");
+      $data = explode(';', $line[0]);
+      
+      log_message('info', $line[0]);
+      log_message('info', $data[0]);
+      log_message('info', $data[1]);
+      log_message('info', str_replace(',', '', $data[1]));
+      // Insert the data into the database
+      $this->db->insert('items', [
+        'name' => $data[0],
+        // Price can have a comma when it's a thousand or more
+        'unitPrice' => str_replace(',', '', $data[1]),
+      ]);
+    }
+    
+    log_message('info', 'Imported data from CSV file');
+    
+    // Close the file
+    fclose($file);
 
     //set final output
     $this->output->set_content_type('application/json')->set_output(json_encode($json));
