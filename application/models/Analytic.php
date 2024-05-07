@@ -279,7 +279,7 @@ class Analytic extends CI_Model{
     */
     public function topDemanded(){
         $q = "SELECT items.name, SUM(transactions.quantity) as 'totSold' FROM items 
-                INNER JOIN transactions ON items.code=transactions.itemCode GROUP BY transactions.itemCode ORDER BY totSold DESC LIMIT 5";
+                INNER JOIN transactions ON items.id=transactions.itemCode GROUP BY transactions.itemCode ORDER BY totSold DESC LIMIT 5";
 
         $run_q = $this->db->query($q);
 
@@ -308,7 +308,7 @@ class Analytic extends CI_Model{
      */
     public function leastDemanded(){
         $q = "SELECT items.name, SUM(transactions.quantity) as 'totSold' FROM items 
-                INNER JOIN transactions ON items.code=transactions.itemCode GROUP BY transactions.itemCode ORDER BY totSold ASC LIMIT 5";
+                INNER JOIN transactions ON items.id=transactions.itemCode GROUP BY transactions.itemCode ORDER BY totSold ASC LIMIT 5";
 
         $run_q = $this->db->query($q);
 
@@ -336,7 +336,7 @@ class Analytic extends CI_Model{
      */
     public function highestEarners(){
         $q = "SELECT items.name, SUM(transactions.totalPrice) as 'totEarned' FROM items 
-                INNER JOIN transactions ON items.code=transactions.itemCode 
+                INNER JOIN transactions ON items.id=transactions.itemCode 
                 GROUP BY transactions.itemCode 
                 ORDER BY totEarned DESC LIMIT 5";
 
@@ -366,7 +366,7 @@ class Analytic extends CI_Model{
     */
     public function lowestEarners(){
         $q = "SELECT items.name, SUM(transactions.totalPrice) as 'totEarned' FROM items 
-               INNER JOIN transactions ON items.code=transactions.itemCode 
+               INNER JOIN transactions ON items.id=transactions.itemCode 
                GROUP BY transactions.itemCode 
                ORDER BY totEarned ASC LIMIT 5";
        
