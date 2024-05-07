@@ -161,3 +161,40 @@ body{
 .custom-active{
     background-color: #333;
 }
+
+body, .sidenav, select {
+    background: #c19a6b !important;
+}
+
+select {
+    color: black !important;
+}
+
+.well {
+    background-image: none;
+    background-color: #c19a6b !important;
+}
+
+/* Add border to the right side of the sidenav */
+.sidenav {
+    border-right: 4px solid #ccc;
+}
+
+.panel-heading {
+    background: #704214 !important;
+}
+
+.btn-primary, .btn-info {
+    background: #704214 !important;
+    border: #704214 !important;
+}
+
+.nav-pills>li.active>a {
+    background-color: #704214 !important;
+    color: white !important;
+    border-radius: 4px;
+}
+
+a {
+    color: #704214 !important;
+}
