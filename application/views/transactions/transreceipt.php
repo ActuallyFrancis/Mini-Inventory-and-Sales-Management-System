@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('');
     <?php $init_total = 0; ?>
     <?php foreach($allTransInfo as $get):?>
         <div class="row">
-            <div class="col-xs-4"><?=ellipsize($get['itemName'], 10);?></div>
+            <div class="col-xs-4"><?=$get['itemName']?></div>
             <div class="col-xs-4"><?=$get['quantity'] . "x" .number_format($get['unitPrice'], 2)?></div>
             <div class="col-xs-4"><?=number_format($get['totalPrice'], 2)?></div>
         </div>
