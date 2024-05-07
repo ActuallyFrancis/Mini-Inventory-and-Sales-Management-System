@@ -100,7 +100,10 @@ defined('BASEPATH') OR exit('');
                 </tbody>
             </table>
             <?php else: ?>
-            No Transactions
+            <pre>
+                
+                No Transactions
+            </pre>
             <?php endif; ?>
         </div>
     </div>
@@ -126,7 +129,10 @@ defined('BASEPATH') OR exit('');
                 </tbody>
             </table>
             <?php else: ?>
-            No Transactions
+                <pre>
+                
+                No Transactions
+            </pre>
             <?php endif; ?>
         </div>
     </div>
@@ -152,7 +158,10 @@ defined('BASEPATH') OR exit('');
                 </tbody>
             </table>
             <?php else: ?>
-            No Transactions
+                <pre>
+                
+                No Transactions
+            </pre>
             <?php endif; ?> 
         </div>
     </div>
@@ -178,7 +187,10 @@ defined('BASEPATH') OR exit('');
                 </tbody>
             </table>
             <?php else: ?>
-            No Transactions
+                <pre>
+                
+                No Transactions
+            </pre>
             <?php endif; ?> 
         </div>
     </div>
