@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('');
             <div class="row">
                 <div class="col-sm-12">
                     <div class="col-sm-2 fa fa-user-plus pointer admin-font" style="color:#337ab7" data-target='#addNewAdminModal' data-toggle='modal'>
-                        Add New Admin
+                        Add New User
                     </div>
                     <div class="col-sm-3 form-inline form-group-sm">
                         <label for="adminListPerPage">Show</label>
@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('');
         <div class="modal-content">
             <div class='modal-header'>
                 <button class="close" data-dismiss='modal'>&times;</button>
-                <h4 class="text-center">Add New Admin</h4>
+                <h4 class="text-center">Add New User</h4>
                 <div class="text-center">
                     <i id="fMsgIcon"></i><span id="fMsg"></span>
                 </div>
@@ -129,7 +129,7 @@ defined('BASEPATH') OR exit('');
             </div>
             <div class="modal-footer">
                 <button type="reset" form="addNewAdminForm" class="btn btn-warning pull-left">Reset Form</button>
-                <button type='button' id='addAdminSubmit' class="btn btn-primary">Add Admin</button>
+                <button type='button' id='addAdminSubmit' class="btn btn-primary">Add User</button>
                 <button type='button' class="btn btn-danger" data-dismiss='modal'>Close</button>
             </div>
         </div>
