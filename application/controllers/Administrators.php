@@ -56,7 +56,12 @@ class Administrators extends CI_Controller
     $orderFormat = $this->input->get('orderFormat', TRUE) ? $this->input->get('orderFormat', TRUE) : "ASC";
 
     //count the total administrators in db (excluding the currently logged in admin)
-    $totalAdministrators = count($this->admin->getAll());
+      $adminCount = $this->admin->getAll();
+      if ($adminCount == FALSE) {
+        $totalAdministrators = 0;
+      } else {
+        $totalAdministrators = $adminCount;
+      }
 
     $this->load->library('pagination');
 

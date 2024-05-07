@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('');
 
 <?php echo isset($range) && !empty($range) ? "Showing ".$range : ""?>
 <div class="panel panel-primary">
-    <div class="panel-heading">ADMINISTRATOR ACCOUNTS</div>
+    <div class="panel-heading">ACCOUNTS</div>
     <?php if($allAdministrators):?>
     <div class="table table-responsive">
         <table class="table table-striped table-bordered">
@@ -33,7 +33,13 @@ defined('BASEPATH') OR exit('');
                         <td class="adminEmail"><?=mailto($get->email)?></td>
                         <td class="adminMobile1"><?=$get->mobile1?></td>
                         <td class="adminMobile2"><?=$get->mobile2?></td>
-                        <td class="adminRole"><?=ucfirst($get->role)?></td>
+                        <td class="adminRole"><?=
+                            // Switch statement
+                            match ($get->role) {
+                                "super" => "Admin",
+                                default => "Employee",
+                            };
+                            ?></td>
                         <td><?=date('jS M, Y h:i:sa', strtotime($get->created_on))?></td>
                         <td>
                             <?=$get->last_login === "0000-00-00 00:00:00" ? "---" : date('jS M, Y h:i:sa', strtotime($get->last_login))?>
