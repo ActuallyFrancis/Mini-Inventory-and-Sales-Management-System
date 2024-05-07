@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
                             <div style="font-size:100px">
-                                <h1><img src="<?=base_url()?>public/images/logo_white.png" alt="1410-logo" height="150px"></h1>
+                                <h1><img src="<?=base_url()?>public/images/logo_lts.png" alt="logo" height="150px"></h1>
                             </div>
                         </div>
                     </div>
