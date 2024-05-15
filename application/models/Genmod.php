@@ -246,4 +246,340 @@ class Genmod extends CI_Model{
             return FALSE;
         }
     }
+    
+    public function createDatabase() {
+        // Create the 1410database database
+        $this->load->dbforge();
+        $this->dbforge->create_database('1410database');
+        
+        $this->createAdminDatabaseIfNotExists();
+        $this->createEventLogDatabaseIfNotExists();
+        $this->createItemsDatabaseIfNotExists();
+        $this->createLkSessDatabaseIfNotExists();
+        $this->createTransactionsDatabaseIfNotExists();
+    }
+    public function createAdminDatabaseIfNotExists() {
+        $this->load->dbforge();
+        
+        $fields = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'first_name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '25',
+                'null' => FALSE
+            ),
+            'last_name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '25',
+                'null' => FALSE
+            ),
+            'email' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+                'null' => FALSE
+            ),
+            'mobile1' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '15',
+                'null' => FALSE
+            ),
+            'mobile2' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '15',
+                'null' => FALSE
+            ),
+            'password' => array(
+                'type' => 'CHAR',
+                'constraint' => '60',
+                'null' => FALSE
+            ),
+            'role' => array(
+                'type' => 'CHAR',
+                'constraint' => '5',
+                'null' => FALSE
+            ),
+            'created_on' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'last_login' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'last_seen' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'last_edited' => array(
+                'type' => 'TIMESTAMP',
+                'null' => FALSE
+            ),
+            'account_status' => array(
+                'type' => 'CHAR',
+                'constraint' => '1',
+                'null' => FALSE,
+                'default' => '1'
+            ),
+            'deleted' => array(
+                'type' => 'CHAR',
+                'constraint' => '1',
+                'null' => FALSE,
+                'default' => '0'
+            )
+        );
+        
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->add_key('email');
+        $this->dbforge->create_table('admin', TRUE);
+        
+        // start add first user
+        $data = array(
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
+            'email' => 'demo@gmail.com',
+            'mobile1' => '12345678901',
+            'mobile2' => '12345678901',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'role' => 'admin',
+            'created_on' => date('Y-m-d H:i:s'),
+            'last_login' => date('Y-m-d H:i:s'),
+            'last_seen' => date('Y-m-d H:i:s'),
+            'last_edited' => date('Y-m-d H:i:s')
+        );
+        
+        $this->db->insert('admin', $data);
+        // end add first user
+    }
+    public function createEventLogDatabaseIfNotExists() {
+        $this->load->dbforge();
+        
+        $fields = array(
+            'id' => array(
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'event' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '200',
+                'null' => FALSE
+            ),
+            'eventRowIdOrRef' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '20',
+                'null' => TRUE
+            ),
+            'eventDesc' => array(
+                'type' => 'TEXT',
+                'null' => TRUE
+            ),
+            'eventTable' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '20',
+                'null' => TRUE
+            ),
+            'staffInCharge' => array(
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+                'null' => FALSE
+            ),
+            'eventTime' => array(
+                'type' => 'TIMESTAMP',
+                'null' => FALSE,
+                'default' => 'CURRENT_TIMESTAMP'
+            )
+        );
+        
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('eventlog', TRUE);
+        
+    }
+    public function createItemsDatabaseIfNotExists() {
+        $this->load->dbforge();
+        
+        $fields = array(
+            'id' => array(
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => FALSE
+            ),
+            'code' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => FALSE
+            ),
+            'description' => array(
+                'type' => 'TEXT',
+                'null' => TRUE
+            ),
+            'unitPrice' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
+            ),
+            'quantity' => array(
+                'type' => 'INT',
+                'constraint' => 6,
+                'null' => FALSE
+            ),
+            'dateAdded' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'lastUpdated' => array(
+                'type' => 'TIMESTAMP',
+                'null' => FALSE,
+                'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+            )
+        );
+        
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->add_key('name');
+        $this->dbforge->add_key('code');
+        $this->dbforge->create_table('items', TRUE);
+    }
+    public function createLkSessDatabaseIfNotExists() {
+        $this->load->dbforge();
+        
+        $fields = array(
+            'id' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '40',
+                'null' => FALSE
+            ),
+            'ip_address' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '45',
+                'null' => FALSE
+            ),
+            'timestamp' => array(
+                'type' => 'INT',
+                'constraint' => 10,
+                'unsigned' => TRUE,
+                'default' => 0
+            ),
+            'data' => array(
+                'type' => 'BLOB',
+                'null' => FALSE
+            )
+        );
+        
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('lk_sess', TRUE);
+    }
+    public function createTransactionsDatabaseIfNotExists()
+    {
+        $this->load->dbforge();
+
+        $fields = array(
+            'transId' => array(
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'ref' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '10',
+                'null' => FALSE
+            ),
+            'itemName' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => FALSE
+            ),
+            'itemCode' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => FALSE
+            ),
+            'description' => array(
+                'type' => 'TEXT',
+                'null' => TRUE
+            ),
+            'quantity' => array(
+                'type' => 'INT',
+                'constraint' => 6,
+                'null' => FALSE
+            ),
+            'unitPrice' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
+            ),
+            'totalPrice' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
+            ),
+            'totalMoneySpent' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
+            ),
+            'amountTendered' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
+            ),
+            'cust_name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '20',
+                'null' => TRUE
+            ),
+            'cust_email' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => TRUE
+            ),
+            'transType' => array(
+                'type' => 'CHAR',
+                'constraint' => '1',
+                'null' => FALSE
+            ),
+            'staffId' => array(
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+                'null' => FALSE
+            ),
+            'transDate' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'lastUpdated' => array(
+                'type' => 'TIMESTAMP',
+                'null' => FALSE,
+                'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+            ),
+            'cancelled' => array(
+                'type' => 'CHAR',
+                'constraint' => '1',
+                'null' => FALSE,
+                'default' => '0'
+            )
+        );
+
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('transId', TRUE);
+        $this->dbforge->add_key('ref');
+        $this->dbforge->create_table('transactions', TRUE);
+    }
 }

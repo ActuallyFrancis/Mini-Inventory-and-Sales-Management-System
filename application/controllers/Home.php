@@ -17,6 +17,12 @@ class Home extends CI_Controller
     if (!empty($_SESSION['admin_id'])) {
       redirect('dashboard');
     }
+    
+    // Generate the SQL Database if it doesn't exist
+    $this->load->dbforge();
+    $this->load->model('genmod');
+    
+    $this->genmod->createDatabase();
   }
 
 
