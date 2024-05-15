@@ -219,44 +219,22 @@ class Genmod extends CI_Model{
     ********************************************************************************************************************************
     */
     
-    /**
-     * Get all mode of payments
-     * @year
-     * @return boolean
-     */
-    public function getPaymentMethods($year){
-		if($this->db->platform() == "sqlite3"){
-			$q = "SELECT modeOfPayment FROM transactions WHERE strftime('%Y', transDate) GROUP BY ref";
-			
-			$run_q = $this->db->query($q);
-		}
-		
-		else{
-			$this->db->select('GROUP_CONCAT(DISTINCT modeOfPayment) as modeOfPayment');
-			$year ? $this->db->where('YEAR(transDate)', $year) : "";
-			$this->db->group_by('ref');
-			$run_q = $this->db->get('transactions');
-		}
-        
-        if($run_q->num_rows()){
-            return $run_q->result();
-        }
-        
-        else{
-            return FALSE;
-        }
-    }
-    
     public function createDatabase() {
-        // Create the 1410database database
         $this->load->dbforge();
-        $this->dbforge->create_database('1410database');
-        
-        $this->createAdminDatabaseIfNotExists();
-        $this->createEventLogDatabaseIfNotExists();
-        $this->createItemsDatabaseIfNotExists();
-        $this->createLkSessDatabaseIfNotExists();
-        $this->createTransactionsDatabaseIfNotExists();
+        $dbName = '1410database';
+
+        // Check if the database exists
+        $query = $this->db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{$dbName}'");
+
+        if ($query->num_rows() == 0) {
+            // Database does not exist, create it
+            $this->dbforge->create_database($dbName);
+            $this->createAdminDatabaseIfNotExists();
+            $this->createEventLogDatabaseIfNotExists();
+            $this->createItemsDatabaseIfNotExists();
+            $this->createLkSessDatabaseIfNotExists();
+            $this->createTransactionsDatabaseIfNotExists();
+        }
     }
     public function createAdminDatabaseIfNotExists() {
         $this->load->dbforge();
