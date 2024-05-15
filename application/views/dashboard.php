@@ -67,12 +67,6 @@ defined('BASEPATH') OR exit('');
             </select>
             <span id="yearAccountLoading"></span>
         </section>
-        
-        <section class="panel">
-          <center>
-              <canvas id="paymentMethodChart" width="200" height="200"/></canvas><br>Payment Methods(%)<span id="paymentMethodYear"></span>
-          </center>
-        </section>
     </div>
 </div>
 <!-- END OF ROW OF GRAPH/CHART OF EARNINGS PER MONTH/YEAR-->

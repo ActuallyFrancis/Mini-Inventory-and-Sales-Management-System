@@ -88,21 +88,16 @@ class Transaction extends CI_Model {
      * @param type $_tas total amount spent
      * @param type $_at amount tendered
      * @param type $_cd change due
-     * @param type $_mop mode of payment
      * @param type $_tt transaction type whether (sale{1} or return{2})
      * @param type $ref
-     * @param float $_va VAT Amount
-     * @param float $_vp VAT Percentage
-     * @param float $da Discount Amount
-     * @param float $dp Discount Percentage
      * @param {string} $cn Customer Name
      * @param {string} $cp Customer Phone
      * @param {string} $ce Customer Email
      * @return boolean
      */
-    public function add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_mop, $_tt, $ref, $cn, $cp, $ce) {
+    public function add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_tt, $ref, $cn, $cp, $ce) {
         $data = ['itemName' => $_iN, 'itemCode' => $_iC, 'description' => $desc, 'quantity' => $q, 'unitPrice' => $_up, 'totalPrice' => $_tp,
-            'amountTendered' => $_at, 'changeDue' => $_cd, 'modeOfPayment' => $_mop, 'transType' => $_tt,
+            'amountTendered' => $_at, 'changeDue' => $_cd, 'transType' => $_tt,
             'staffId' => $this->session->admin_id, 'totalMoneySpent' => $_tas, 'ref' => $ref, 'cust_name'=>$cn, 'cust_phone'=>$cp,
             'cust_email'=>$ce];
 

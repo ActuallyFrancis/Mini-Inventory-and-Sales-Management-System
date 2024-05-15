@@ -179,148 +179,9 @@ $(document).ready(function () {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //enable/disable amount tendered input field based on the selected mode of payment
-    $("#modeOfPayment").change(function () {
-        var modeOfPayment = $(this).val();
-
-        //remove any error message we might have
-        $("#amountTenderedErr").html("");
-
-        //unset the values of cashAmount and posAmount
-        $("#cashAmount, #posAmount").val("");
-
-        if(modeOfPayment === "POS") {
-            /**
-             * Change the Label
-             * set the "cumulative amount" value field as the value of "amount tendered" and make the amountTendered field disabled
-             * change "changeDue" to 0.00
-             * hide "cash" an "pos" fields
-             * 
-             */
-            $("#amountTenderedLabel").html("Amount Tendered");
-            $("#amountTendered").val($("#cumAmount").html()).prop('disabled', true);
-            $("#changeDue").html('0.00');
-            $(".cashAndPos").addClass('hidden');
-        }
-
-        else if(modeOfPayment === "Cash and POS") {
-            /*
-             * Change the label
-             * make empty "amount tendered" field's value and also make it writable
-             * unset any value that might be in "changeDue"
-             * display "cash" an "pos" fields
-             */
-            $("#amountTenderedLabel").html("Total");
-            $("#amountTendered").val('').prop('disabled', true);
-            $("#changeDue").html('');
-            $(".cashAndPos").removeClass('hidden');
-        }
-
-        else {//if cash. If something not recognise, we assume it is cash
-            /*
-             * change the label
-             * empty and make amountTendered field writable
-             * unset any value that might be in "changeDue"
-             * hide "cash" an "pos" fields
-             */
-            $("#amountTenderedLabel").html("Amount Tendered");
-            $("#amountTendered").val('').prop('disabled', false);
-            $("#changeDue").html('');
-            $(".cashAndPos").addClass('hidden');
-        }
-    });
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     //calculate the change due based on the amount tendered. Also ensure amount tendered is not less than the cumulative amount 
     $("#amountTendered").on('change focusout keyup keydown keypress', calchadue);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-     * unset mode of payment each time ".itemTransQty" changes
-     * This will allow the user to be able to reselect the mode of payment, 
-     * thus enabling us to recalculate change due based on amount tendered
-     */
-    $("#appendClonedDivHere").on("change", ".itemTransQty", function (e) {
-        e.preventDefault();
-
-        return new Promise((resolve, reject) => {
-            $("#modeOfPayment").val("");
-
-            resolve();
-        }).then(() => {
-            ceipacp();
-        }).catch();
-
-        //recalculate
-        ceipacp();
-
-        $("#modeOfPayment").val("");
-    });
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * If mode of payment is "Cash and POS", both #cashAmount and #posAmount fields will be visible to user to add values
-     * The addition of both will be set as the amount tendered
-     */
-    $("#cashAmount, #posAmount").on("change", function (e) {
-        e.preventDefault();
-
-        var totalAmountTendered = parseFloat($("#posAmount").val()) + parseFloat($("#cashAmount").val());
-
-        //set amount tendered as the value of "totalAmountTendered" and then trigger the change event on it
-        $("#amountTendered").val(isNaN(totalAmountTendered) ? "" : totalAmountTendered).change();
-    });
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //calcuate cumulative amount if the percentage of VAT is changed
-    $("#vat").change(ceipacp);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //calcuate cumulative amount if the percentage of discount is changed
-    $("#discount").change(ceipacp);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //calculate discount percentage when discount (value) is changed
-    $("#discountValue").change(function () {
-        var discountValue = $(this).val();
-
-        var discountPercentage = (discountValue / cumTotalWithoutVATAndDiscount) * 100;
-
-        //display the discount (%)
-        $("#discount").val(discountPercentage).change();
-    });
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,7 +194,6 @@ $(document).ready(function () {
         //ensure all fields are properly filled
         var amountTendered = parseFloat($("#amountTendered").val());
         var changeDue = $("#changeDue").html();
-        var modeOfPayment = $("#modeOfPayment").val();
         var cumAmount = parseFloat($("#cumAmount").html());
         var arrToSend = [];
         var vatPercentage = $("#vat").val();
@@ -343,9 +203,11 @@ $(document).ready(function () {
         var custEmail = $("#custEmail").val();
 
 
-        if(isNaN(amountTendered) || (amountTendered === '0.00') || !modeOfPayment || (amountTendered < cumAmount)) {
-            isNaN(amountTendered) || (amountTendered === '0.00') ? $("#amountTenderedErr").html("required") : $("#amountTenderedErr").html("");
-            !modeOfPayment ? $("#modeOfPaymentErr").html("Select mode of payment") : $("#modeOfPaymentErr").html("");
+        if(isNaN(amountTendered) ||
+            (amountTendered === '0.00') ||
+            (amountTendered < cumAmount)) {
+            isNaN(amountTendered) ||
+            (amountTendered === '0.00') ? $("#amountTenderedErr").html("required") : $("#amountTenderedErr").html("");
             amountTendered < cumAmount ? $("#amountTenderedErr").html("Amount cannot be less than " + cumAmount) : "";
 
             return;
@@ -353,7 +215,7 @@ $(document).ready(function () {
 
         else {
             //remove error messages if any
-            changeInnerHTML(["amountTenderedErr", "modeOfPaymentErr"], "");
+            changeInnerHTML(["amountTenderedErr"], "");
 
             //now get details of all items to be sold (itemCode, qty, unitPrice, totPrice)
             var selectedItemNode = document.getElementsByClassName("selectedItem");//get all elem with class "selectedItem"
@@ -423,7 +285,7 @@ $(document).ready(function () {
                     url: appRoot + "transactions/nso_",
                     method: "post",
                     data: {
-                        _aoi: _aoi, _mop: modeOfPayment, _at: amountTendered, _cd: changeDue, _ca: cumAmount, vat: vatPercentage,
+                        _aoi: _aoi, _at: amountTendered, _cd: changeDue, _ca: cumAmount, vat: vatPercentage,
                         discount: discountPercentage, cn: custName, ce: custEmail, cp: custPhone
                     },
 

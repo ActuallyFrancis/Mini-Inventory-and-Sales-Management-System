@@ -97,12 +97,9 @@ class Transactions extends CI_Controller
     $this->genlib->ajaxOnly();
 
     $arrOfItemsDetails = json_decode($this->input->post('_aoi', TRUE));
-    $_mop = $this->input->post('_mop', TRUE); //mode of payment
     $_at = round($this->input->post('_at', TRUE), 2); //amount tendered
     $_cd = $this->input->post('_cd', TRUE); //change due
     $cumAmount = $this->input->post('_ca', TRUE); //cumulative amount
-    $vatPercentage = $this->input->post('vat', TRUE); //vat percentage
-    $discount_percentage = $this->input->post('discount', TRUE); //discount percentage
     $cust_name = $this->input->post('cn', TRUE);
     $cust_phone = $this->input->post('cp', TRUE);
     $cust_email = $this->input->post('ce', TRUE);
@@ -121,14 +118,9 @@ class Transactions extends CI_Controller
       //will insert info into db and return transaction's receipt
       $returnedData = $this->insertTrToDb(
         $arrOfItemsDetails,
-        $_mop,
         $_at,
         $cumAmount,
         $_cd,
-        $this->vat_amount,
-        $vatPercentage,
-        $this->discount_amount,
-        $discount_percentage,
         $cust_name,
         $cust_phone,
         $cust_email
@@ -231,20 +223,15 @@ class Transactions extends CI_Controller
   /**
    * 
    * @param type $arrOfItemsDetails
-   * @param type $_mop
    * @param type $_at
    * @param type $cumAmount
    * @param type $_cd
-   * @param type $vatAmount
-   * @param type $vatPercentage
-   * @param type $discount_amount
-   * @param type $discount_percentage
    * @param type $cust_name
    * @param type $cust_phone
    * @param type $cust_email
    * @return boolean
    */
-  private function insertTrToDb($arrOfItemsDetails, $_mop, $_at, $cumAmount, $_cd, $vatAmount, $vatPercentage, $discount_amount, $discount_percentage, $cust_name, $cust_phone, $cust_email)
+  private function insertTrToDb($arrOfItemsDetails, $_at, $cumAmount, $_cd, $cust_name, $cust_phone, $cust_email)
   {
     $allTransInfo = []; //to hold info of all items' in transaction
 
@@ -267,7 +254,7 @@ class Transactions extends CI_Controller
 
       /*
              * add transaction to db
-             * function header: add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_mop, $_tt, $ref, $_va, $_vp, $da, $dp, $cn, $cp, $ce)
+             * function header: add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_tt, $ref, $_va, $_vp, $da, $dp, $cn, $cp, $ce)
              */
       $transId = $this->transaction->add(
         $itemName,
@@ -279,7 +266,6 @@ class Transactions extends CI_Controller
         $cumAmount,
         $_at,
         $_cd,
-        $_mop,
         1,
         $ref,
         $cust_name,
@@ -307,7 +293,7 @@ class Transactions extends CI_Controller
       $dateInDb = $this->genmod->getTableCol('transactions', 'transDate', 'transId', $transId);
 
       //generate receipt to return
-      $dataToReturn['transReceipt'] = $this->genTransReceipt($allTransInfo, $cumAmount, $_at, $_cd, $ref, $dateInDb, $_mop, $vatAmount, $vatPercentage, $discount_amount, $discount_percentage, $cust_name, $cust_phone, $cust_email);
+      $dataToReturn['transReceipt'] = $this->genTransReceipt($allTransInfo, $cumAmount, $_at, $_cd, $ref, $dateInDb, $cust_name, $cust_phone, $cust_email);
       $dataToReturn['transRef'] = $ref;
 
       return $dataToReturn;
@@ -331,7 +317,6 @@ class Transactions extends CI_Controller
    * @param type $_cd
    * @param type $ref
    * @param type $transDate
-   * @param type $_mop
    * @param type $cust_name
    * @param type $cust_phone
    * @param type $cust_email
@@ -344,7 +329,6 @@ class Transactions extends CI_Controller
     $_cd,
     $ref,
     $transDate,
-    $_mop,
     $cust_name,
     $cust_phone,
     $cust_email
@@ -355,7 +339,6 @@ class Transactions extends CI_Controller
     $data['changeDue'] = $_cd;
     $data['ref'] = $ref;
     $data['transDate'] = $transDate;
-    $data['_mop'] = $_mop;
     $data['cust_name'] = $cust_name;
     $data['cust_phone'] = $cust_phone;
     $data['cust_email'] = $cust_email;

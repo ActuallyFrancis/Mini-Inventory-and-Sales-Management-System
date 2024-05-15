@@ -61,19 +61,6 @@ if(isset($items) && !empty($items)){
                                     </div>
                                     <!-- End of text to click to add another item to transaction-->
                                     <br>
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-3 form-group-sm">
-                                            <label for="modeOfPayment">Mode of Payment</label>
-                                            <select class="form-control checkField" id="modeOfPayment">
-                                                <option value="">---</option>
-                                                <option value="Cash">Cash</option>
-                                                <option value="POS">POS</option>
-                                                <option value="Cash and POS">Cash and POS</option>
-                                            </select>
-                                            <span class="help-block errMsg" id="modeOfPaymentErr"></span>
-                                        </div>
-                                    </div>
                                         
                                     <div class="row">
                                         <div class="col-sm-4 form-group-sm">

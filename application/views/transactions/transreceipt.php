@@ -53,11 +53,6 @@ defined('BASEPATH') OR exit('');
         </div>
     </div>
     <hr style='margin-top:5px; margin-bottom:0px'>
-    <div class="row margin-top-5">
-        <div class="col-xs-12">
-            <b>Mode of Payment: <?=isset($_mop) ? str_replace("_", " ", $_mop) : ""?></b>
-        </div>
-    </div>
     <div class="row">
         <div class="col-xs-12">
             <b>Amount Tendered: ₱<?=isset($amountTendered) ? number_format($amountTendered, 2) : ""?></b>
