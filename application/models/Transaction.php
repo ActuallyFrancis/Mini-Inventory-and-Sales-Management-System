@@ -35,7 +35,7 @@ class Transaction extends CI_Model {
             $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
-                transactions.cust_name, transactions.cust_phone, transactions.cust_email, transactions.cancelled
+                transactions.cust_name, transactions.cust_email, transactions.cancelled
                 FROM transactions
                 LEFT OUTER JOIN admin ON transactions.staffId = admin.id
                 GROUP BY ref
@@ -49,7 +49,7 @@ class Transaction extends CI_Model {
                 GROUP_CONCAT(DISTINCT transactions.modeOfPayment) AS modeOfPayment, GROUP_CONCAT(DISTINCT transactions.staffId) AS staffId, GROUP_CONCAT(DISTINCT transactions.transDate) AS transDate, 
                 GROUP_CONCAT(DISTINCT transactions.lastUpdated) AS lastUpdated, GROUP_CONCAT(DISTINCT transactions.amountTendered) AS amountTendered, GROUP_CONCAT(DISTINCT transactions.cancelled) AS cancelled,
                 GROUP_CONCAT(DISTINCT transactions.changeDue) AS changeDue, CONCAT_WS(" ", GROUP_CONCAT(DISTINCT admin.first_name), GROUP_CONCAT(DISTINCT admin.last_name)) as "staffName",
-                GROUP_CONCAT(DISTINCT transactions.cust_name) AS cust_name, GROUP_CONCAT(DISTINCT transactions.cust_phone) AS cust_phone, GROUP_CONCAT(DISTINCT transactions.cust_email) AS cust_email');
+                GROUP_CONCAT(DISTINCT transactions.cust_name) AS cust_name, GROUP_CONCAT(DISTINCT transactions.cust_email) AS cust_email');
             
             $this->db->select_sum('transactions.quantity');
             
@@ -95,11 +95,10 @@ class Transaction extends CI_Model {
      * @param {string} $ce Customer Email
      * @return boolean
      */
-    public function add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_tt, $ref, $cn, $cp, $ce) {
+    public function add($_iN, $_iC, $desc, $q, $_up, $_tp, $_tas, $_at, $_cd, $_tt, $ref, $cn, $ce) {
         $data = ['itemName' => $_iN, 'itemCode' => $_iC, 'description' => $desc, 'quantity' => $q, 'unitPrice' => $_up, 'totalPrice' => $_tp,
             'amountTendered' => $_at, 'changeDue' => $_cd, 'transType' => $_tt,
-            'staffId' => $this->session->admin_id, 'totalMoneySpent' => $_tas, 'ref' => $ref, 'cust_name'=>$cn, 'cust_phone'=>$cp,
-            'cust_email'=>$ce];
+            'staffId' => $this->session->admin_id, 'totalMoneySpent' => $_tas, 'ref' => $ref, 'cust_name'=>$cn, 'cust_email'=>$ce];
 
         //set the datetime based on the db driver in use
         $this->db->platform() == "sqlite3" ?
@@ -154,7 +153,7 @@ class Transaction extends CI_Model {
         $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 CONCAT_WS(" ", admin.first_name, admin.last_name) as "staffName",
-                transactions.cust_name, transactions.cust_phone, transactions.cust_email');
+                transactions.cust_name, transactions.cust_email');
         $this->db->select_sum('transactions.quantity');
         $this->db->join('admin', 'transactions.staffId = admin.id', 'LEFT');
         $this->db->like('ref', $value);
@@ -293,7 +292,7 @@ class Transaction extends CI_Model {
             $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
-                transactions.cust_name, transactions.cust_phone, transactions.cust_email
+                transactions.cust_name, transactions.cust_email
                 FROM transactions
                 LEFT OUTER JOIN admin ON transactions.staffId = admin.id
                 WHERE 
@@ -308,7 +307,7 @@ class Transaction extends CI_Model {
             $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                     transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                     CONCAT_WS(" ", admin.first_name, admin.last_name) AS "staffName",
-                    transactions.cust_name, transactions.cust_phone, transactions.cust_email');
+                    transactions.cust_name, transactions.cust_email');
 
             $this->db->select_sum('transactions.quantity');
 
@@ -332,7 +331,7 @@ class Transaction extends CI_Model {
             $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
-                transactions.cust_name, transactions.cust_phone, transactions.cust_email
+                transactions.cust_name, transactions.cust_email
                 FROM transactions
                 LEFT OUTER JOIN admin ON transactions.staffId = admin.id
                 WHERE 
@@ -347,7 +346,7 @@ class Transaction extends CI_Model {
             $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
                     transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                     CONCAT_WS(" ", admin.first_name, admin.last_name) AS "staffName",
-                    transactions.cust_name, transactions.cust_phone, transactions.cust_email');
+                    transactions.cust_name, transactions.cust_email');
 
             $this->db->select_sum('transactions.quantity');
 

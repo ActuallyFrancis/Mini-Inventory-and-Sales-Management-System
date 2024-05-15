@@ -101,11 +101,6 @@ if(isset($items) && !empty($items)){
                                         </div>
                                         
                                         <div class="col-sm-4 form-group-sm">
-                                            <label for="custPhone">Customer Phone</label>
-                                            <input type="tel" id="custPhone" class="form-control" placeholder="Phone Number">
-                                        </div>
-                                        
-                                        <div class="col-sm-4 form-group-sm">
                                             <label for="custEmail">Customer Email</label>
                                             <input type="email" id="custEmail" class="form-control" placeholder="E-mail Address">
                                         </div>

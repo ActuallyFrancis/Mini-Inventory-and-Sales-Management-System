@@ -101,7 +101,6 @@ class Transactions extends CI_Controller
     $_cd = $this->input->post('_cd', TRUE); //change due
     $cumAmount = $this->input->post('_ca', TRUE); //cumulative amount
     $cust_name = $this->input->post('cn', TRUE);
-    $cust_phone = $this->input->post('cp', TRUE);
     $cust_email = $this->input->post('ce', TRUE);
 
     /*
@@ -122,7 +121,6 @@ class Transactions extends CI_Controller
         $cumAmount,
         $_cd,
         $cust_name,
-        $cust_phone,
         $cust_email
       );
 
@@ -227,11 +225,10 @@ class Transactions extends CI_Controller
    * @param type $cumAmount
    * @param type $_cd
    * @param type $cust_name
-   * @param type $cust_phone
    * @param type $cust_email
    * @return boolean
    */
-  private function insertTrToDb($arrOfItemsDetails, $_at, $cumAmount, $_cd, $cust_name, $cust_phone, $cust_email)
+  private function insertTrToDb($arrOfItemsDetails, $_at, $cumAmount, $_cd, $cust_name, $cust_email)
   {
     $allTransInfo = []; //to hold info of all items' in transaction
 
@@ -269,7 +266,6 @@ class Transactions extends CI_Controller
         1,
         $ref,
         $cust_name,
-        $cust_phone,
         $cust_email
       );
 
@@ -293,7 +289,7 @@ class Transactions extends CI_Controller
       $dateInDb = $this->genmod->getTableCol('transactions', 'transDate', 'transId', $transId);
 
       //generate receipt to return
-      $dataToReturn['transReceipt'] = $this->genTransReceipt($allTransInfo, $cumAmount, $_at, $_cd, $ref, $dateInDb, $cust_name, $cust_phone, $cust_email);
+      $dataToReturn['transReceipt'] = $this->genTransReceipt($allTransInfo, $cumAmount, $_at, $_cd, $ref, $dateInDb, $cust_name, $cust_email);
       $dataToReturn['transRef'] = $ref;
 
       return $dataToReturn;
@@ -318,7 +314,6 @@ class Transactions extends CI_Controller
    * @param type $ref
    * @param type $transDate
    * @param type $cust_name
-   * @param type $cust_phone
    * @param type $cust_email
    * @return type
    */
@@ -330,7 +325,6 @@ class Transactions extends CI_Controller
     $ref,
     $transDate,
     $cust_name,
-    $cust_phone,
     $cust_email
   ) {
     $data['allTransInfo'] = $allTransInfo;
@@ -340,7 +334,6 @@ class Transactions extends CI_Controller
     $data['ref'] = $ref;
     $data['transDate'] = $transDate;
     $data['cust_name'] = $cust_name;
-    $data['cust_phone'] = $cust_phone;
     $data['cust_email'] = $cust_email;
 
     //generate and return receipt
@@ -381,7 +374,6 @@ class Transactions extends CI_Controller
       $transDate = $transInfo[0]['transDate'];
       $modeOfPayment = $transInfo[0]['modeOfPayment'];
       $cust_name = $transInfo[0]['cust_name'];
-      $cust_phone = $transInfo[0]['cust_phone'];
       $cust_email = $transInfo[0]['cust_email'];
 
       $json['transReceipt'] = $this->genTransReceipt(
@@ -393,7 +385,6 @@ class Transactions extends CI_Controller
         $transDate,
         $modeOfPayment,
         $cust_name,
-        $cust_phone,
         $cust_email
       );
     } else {

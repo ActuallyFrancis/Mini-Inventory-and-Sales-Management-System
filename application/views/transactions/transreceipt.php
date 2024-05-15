@@ -71,11 +71,6 @@ defined('BASEPATH') OR exit('');
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <b>Customer Phone: <?=$cust_phone?></b>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
             <b>Customer Email: <?=$cust_email?></b>
         </div>
     </div>

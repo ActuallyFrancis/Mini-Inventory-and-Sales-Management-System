@@ -199,7 +199,6 @@ $(document).ready(function () {
         var vatPercentage = $("#vat").val();
         var discountPercentage = $("#discount").val();
         var custName = $("#custName").val();
-        var custPhone = $("#custPhone").val();
         var custEmail = $("#custEmail").val();
 
 
@@ -286,8 +285,7 @@ $(document).ready(function () {
                     method: "post",
                     data: {
                         _aoi: _aoi, _at: amountTendered, _cd: changeDue, _ca: cumAmount, vat: vatPercentage,
-                        discount: discountPercentage, cn: custName, ce: custEmail, cp: custPhone
-                    },
+                        discount: discountPercentage, cn: custName, ce: custEmail, },
 
                     success: function (returnedData) {
                         if(returnedData.status === 1) {
