@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('');
 <div class="pwell hidden-print"> 
     <div class="row">
         <div class="col-sm-6">
-            <a href="<?=base_url()?>misc/dldb" download="1410inventory.sqlite"><button class="btn btn-primary">Download Data</button></a>
+            <a href="<?=base_url()?>misc/dldb" download="inventory.csv"><button class="btn btn-primary">Download Inventory</button></a>
         </div>
 
         <br class="visible-xs">

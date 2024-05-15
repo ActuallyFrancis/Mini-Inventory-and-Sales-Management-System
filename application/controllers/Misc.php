@@ -65,11 +65,22 @@ class Misc extends CI_Controller
     $this->genlib->checkLogin();
 
     $this->genlib->superOnly();
-
-    $file_path = BASEPATH . "sqlite/1410inventory.sqlite"; //link to db file
-
-    $this->output->set_content_type('')->set_output(file_get_contents($file_path));
+    
+    // Export the items table to a CSV file, not the sqlite file
+    $this->load->dbutil();
+    $this->load->helper('file');
+    
+    $delimiter = ",";
+    $newline = "\r\n";
+    $enclosure = '"';
+    $data = $this->dbutil->csv_from_result($this->db->get('items'), $delimiter, $newline, $enclosure);
+    
+    $file_path = BASEPATH . "sqlite/1410inventory.csv";
+    write_file($file_path, $data);
+    
+    $this->output->set_content_type('application/csv')->set_output(file_get_contents($file_path));
   }
+  
 
   /**
    * 
