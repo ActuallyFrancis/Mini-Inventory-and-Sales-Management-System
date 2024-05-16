@@ -279,6 +279,22 @@ defined('BASEPATH') OR exit('');
                             <input type="text" id="itemPriceEdit" name="itemPrice" placeholder="Unit Price" class="form-control checkField">
                             <span class="help-block errMsg" id="itemPriceEditErr"></span>
                         </div>
+                        
+                        <!-- Category dropdown -->
+                        <div class="col-sm-4 form-group-sm">
+                            <label for="itemCategoryEdit">Item Category</label>
+                            <?php if (!empty($categories)): ?>
+                                <select id="itemCategoryEdit" class="form-control checkField">
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php else: ?>
+                                <select id="itemCategoryEdit" class="form-control checkField" disabled>
+                                    <option>No categories available</option>
+                                </select>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     
                     <div class="row">

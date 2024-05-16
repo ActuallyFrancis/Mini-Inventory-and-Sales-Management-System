@@ -306,6 +306,7 @@ $(document).ready(function(){
         var itemDesc = $("#itemDescriptionEdit").val();
         var itemId = $("#itemIdEdit").val();
         var itemAmount = $("#itemQuantityEdit").val();
+        var itemCategory = $("#itemCategoryEdit").val();
         
         if(!itemName || !itemPrice || !itemId ){
             !itemName ? $("#itemNameEditErr").html("Item name cannot be empty") : "";
@@ -320,7 +321,7 @@ $(document).ready(function(){
         $.ajax({
             method: "POST",
             url: appRoot+"items/edit",
-            data: {itemName:itemName, itemPrice:itemPrice, itemDesc:itemDesc, _iId:itemId, itemAmount:itemAmount}
+            data: {itemName:itemName, itemPrice:itemPrice, itemDesc:itemDesc, _iId:itemId, itemAmount:itemAmount, itemCategory:itemCategory}
         }).done(function(returnedData){
             if(returnedData.status === 1){
                 $("#editItemFMsg").css('color', 'green').html("Item successfully updated");
