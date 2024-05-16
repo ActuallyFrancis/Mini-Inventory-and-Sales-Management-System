@@ -134,6 +134,11 @@ $(document).ready(function () {
         calchadue();//also recalculate change due
     });
 
+    $("#appendClonedDivHere").on("change", ".itemTransQty", function (e) {
+        e.preventDefault();
+        ceipacp();
+    });
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -597,7 +602,7 @@ function ceipacp() {
 
             //display msg telling user the qty left
             $(this).find(".itemTransQtyErr").html("only " + availQty + " left");
-
+            
             ceipacp();//call itself in order to recalculate price
         }
 
@@ -621,9 +626,6 @@ function ceipacp() {
             //set the total amount before any addition or dedcution
             cumTotalWithoutVATAndDiscount = cumulativePrice;
         }
-
-        //trigger the click event of "use barcode" btn to focus on the barcode input text
-        $("#useScanner").click();
     });
 
     return new Promise(function (resolve, reject) {

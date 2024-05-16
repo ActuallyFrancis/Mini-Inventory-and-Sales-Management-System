@@ -372,7 +372,6 @@ class Transactions extends CI_Controller
       $amountTendered = $transInfo[0]['amountTendered'];
       $changeDue = $transInfo[0]['changeDue'];
       $transDate = $transInfo[0]['transDate'];
-      $modeOfPayment = $transInfo[0]['modeOfPayment'];
       $cust_name = $transInfo[0]['cust_name'];
       $cust_email = $transInfo[0]['cust_email'];
 
@@ -383,7 +382,6 @@ class Transactions extends CI_Controller
         $changeDue,
         $ref,
         $transDate,
-        $modeOfPayment,
         $cust_name,
         $cust_email
       );

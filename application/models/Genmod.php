@@ -593,6 +593,11 @@ class Genmod extends CI_Model{
                 'constraint' => '1',
                 'null' => FALSE,
                 'default' => '0'
+            ),
+            'changeDue' => array(
+                'type' => 'DECIMAL',
+                'constraint' => '10,2',
+                'null' => FALSE
             )
         );
 

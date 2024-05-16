@@ -32,7 +32,7 @@ class Transaction extends CI_Model {
      */
     public function getAll($orderBy, $orderFormat, $start, $limit) {
         if ($this->db->platform() == "sqlite3") {
-            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
                 transactions.cust_name, transactions.cust_email, transactions.cancelled
@@ -46,7 +46,7 @@ class Transaction extends CI_Model {
         }
         else {
             $this->db->select('GROUP_CONCAT(DISTINCT transId) AS transId, GROUP_CONCAT(DISTINCT totalPrice) AS totalPrice, transactions.ref, GROUP_CONCAT(DISTINCT transactions.totalMoneySpent) AS totalMoneySpent, 
-                GROUP_CONCAT(DISTINCT transactions.modeOfPayment) AS modeOfPayment, GROUP_CONCAT(DISTINCT transactions.staffId) AS staffId, GROUP_CONCAT(DISTINCT transactions.transDate) AS transDate, 
+                GROUP_CONCAT(DISTINCT transactions.staffId) AS staffId, GROUP_CONCAT(DISTINCT transactions.transDate) AS transDate, 
                 GROUP_CONCAT(DISTINCT transactions.lastUpdated) AS lastUpdated, GROUP_CONCAT(DISTINCT transactions.amountTendered) AS amountTendered, GROUP_CONCAT(DISTINCT transactions.cancelled) AS cancelled,
                 GROUP_CONCAT(DISTINCT transactions.changeDue) AS changeDue, CONCAT_WS(" ", GROUP_CONCAT(DISTINCT admin.first_name), GROUP_CONCAT(DISTINCT admin.last_name)) as "staffName",
                 GROUP_CONCAT(DISTINCT transactions.cust_name) AS cust_name, GROUP_CONCAT(DISTINCT transactions.cust_email) AS cust_email');
@@ -150,7 +150,7 @@ class Transaction extends CI_Model {
      */
 
     public function transSearch($value) {
-        $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+        $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 CONCAT_WS(" ", admin.first_name, admin.last_name) as "staffName",
                 transactions.cust_name, transactions.cust_email');
@@ -289,7 +289,7 @@ class Transaction extends CI_Model {
     
     public function getDateRange($from_date, $to_date){
         if ($this->db->platform() == "sqlite3") {
-            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
                 transactions.cust_name, transactions.cust_email
@@ -304,7 +304,7 @@ class Transaction extends CI_Model {
         }
         
         else {
-            $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+            $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                     transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                     CONCAT_WS(" ", admin.first_name, admin.last_name) AS "staffName",
                     transactions.cust_name, transactions.cust_email');
@@ -328,7 +328,7 @@ class Transaction extends CI_Model {
 
     public function getDateRangeResultFormat($from_date, $to_date){
         if ($this->db->platform() == "sqlite3") {
-            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+            $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
                 transactions.cust_name, transactions.cust_email
@@ -343,7 +343,7 @@ class Transaction extends CI_Model {
         }
 
         else {
-            $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.modeOfPayment, transactions.staffId,
+            $this->db->select('transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                     transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                     CONCAT_WS(" ", admin.first_name, admin.last_name) AS "staffName",
                     transactions.cust_name, transactions.cust_email');
