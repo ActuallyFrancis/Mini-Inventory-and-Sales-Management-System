@@ -91,9 +91,9 @@ class Misc extends CI_Controller
     $this->genlib->superOnly();
 
     //create a copy of the db file currently in the sqlite dir for keep in case something go wrong
-    if (file_exists(BASEPATH . "sqlite/1410inventory.sqlite")) {
+    /*if (file_exists(BASEPATH . "sqlite/1410inventory.sqlite")) {
       copy(BASEPATH . "sqlite/1410inventory.sqlite", BASEPATH . "sqlite/backups/" . time() . ".sqlite");
-    }
+    }*/
 
     $config['upload_path'] = BASEPATH . "sqlite/"; //db files are stored in the basepath
     $config['allowed_types'] = 'csv|txt';
