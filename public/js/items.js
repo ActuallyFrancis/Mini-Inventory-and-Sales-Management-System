@@ -201,6 +201,7 @@ $(document).ready(function(){
                         url: appRoot+"items/getcategoriesextern",
                         success: function(returnedData){
                             var $dropdown = $('#itemCategory');
+                            $dropdown.removeAttr('disabled');
                             $dropdown.empty();
                             $.each(returnedData.categories, function() {
                                 $dropdown.append($('<option></option>').attr('value', this.id).text(this.name));
