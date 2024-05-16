@@ -424,7 +424,7 @@ class Genmod extends CI_Model{
             ),
             'name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '50',
+                'constraint' => '512',
                 'null' => FALSE
             ),
             'code' => array(
@@ -520,7 +520,7 @@ class Genmod extends CI_Model{
             ),
             'itemName' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '50',
+                'constraint' => '512',
                 'null' => FALSE
             ),
             'itemCode' => array(
@@ -618,7 +618,7 @@ class Genmod extends CI_Model{
             ),
             'name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '50',
+                'constraint' => '512',
                 'null' => FALSE
             ),
             'description' => array(
