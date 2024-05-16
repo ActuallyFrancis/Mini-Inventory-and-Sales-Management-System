@@ -39,6 +39,16 @@ defined('BASEPATH') OR exit('');
                             <option value="unitPrice-ASC">Unit Price (lowest first)</option>
                             <option value="quantity-ASC">Quantity (lowest first)</option>
                         </select>
+
+                            <label for="transListCategory">Category</label>
+                            <select id="transListCategory" class="form-control">
+                                <option value="-1">All</option>
+                                <?php if(isset($categories) && !empty($categories)): ?>
+                                    <?php foreach($categories as $get): ?>
+                                        <option value="<?=$get->id?>"><?=$get->name?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
                     </div>
 
                     <div class="col-sm-3 form-inline form-group-sm">

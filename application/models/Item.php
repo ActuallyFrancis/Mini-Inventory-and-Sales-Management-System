@@ -18,9 +18,12 @@ class Item extends CI_Model{
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public function getAll($orderBy, $orderFormat, $start=0, $limit=''){
+    public function getAll($orderBy, $orderFormat, $start=0, $limit='', $category=''){
         $this->db->limit($limit, $start);
         $this->db->order_by($orderBy, $orderFormat);
+        if ($category != '' && $category != 'all') {
+            $this->db->where('category', $category);
+        }
         
         $run_q = $this->db->get('items');
         

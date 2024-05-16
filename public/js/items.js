@@ -233,6 +233,11 @@ $(document).ready(function(){
         displayFlashMsg("Please wait...", spinnerClass, "", "");
         lilt();
     });
+
+    $("#transListCategory").change(function(){
+        displayFlashMsg("Please wait...", spinnerClass, "", "");
+        lilt();
+    });
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -515,23 +520,40 @@ $(document).ready(function(){
 function lilt(url){
     var orderBy = $("#itemsListSortBy").val().split("-")[0];
     var orderFormat = $("#itemsListSortBy").val().split("-")[1];
+    var category = $("#transListCategory").val();
     var limit = $("#itemsListPerPage").val();
-    
-    
-    $.ajax({
-        type:'get',
-        url: url ? url : appRoot+"items/lilt/",
-        data: {orderBy:orderBy, orderFormat:orderFormat, limit:limit},
-        
-        success: function(returnedData){
-            hideFlashMsg();
-            $("#itemsListTable").html(returnedData.itemsListTable);
-        },
-        
-        error: function(){
-            
-        }
-    });
+
+    if (category == -1) {
+        $.ajax({
+            type: 'get',
+            url: url ? url : appRoot + "items/lilt/",
+            data: {orderBy: orderBy, orderFormat: orderFormat, limit: limit, category: "all"},
+
+            success: function (returnedData) {
+                hideFlashMsg();
+                $("#itemsListTable").html(returnedData.itemsListTable);
+            },
+
+            error: function () {
+
+            }
+        });
+    } else {
+        $.ajax({
+            type: 'get',
+            url: url ? url : appRoot + "items/lilt/",
+            data: {orderBy: orderBy, orderFormat: orderFormat, limit: limit, category: category},
+
+            success: function (returnedData) {
+                hideFlashMsg();
+                $("#itemsListTable").html(returnedData.itemsListTable);
+            },
+
+            error: function () {
+
+            }
+        });
+    }
     
     return false;
 }
