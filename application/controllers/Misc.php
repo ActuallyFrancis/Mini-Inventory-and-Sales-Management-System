@@ -115,22 +115,56 @@ class Misc extends CI_Controller
     // Open the file for reading
     $file = fopen(BASEPATH . "sqlite/import.csv", 'r');
     
-    // Extract the semicolon separated data ([0] is name, and [1] is price)
-    while (($line = fgetcsv($file)) !== FALSE) {
+    $firstItem = true;
+    $this->load->model('Category');
+    
+    while (($data = fgetcsv($file)) !== FALSE) {
+
+        log_message("info", "Extracting data from CSV");
+
+        // Split the line into an array of values
+        $itemName = $data[0];
+        $itemCategory = $data[1];
+        $quantity = $data[2];
+        $unitPrice = str_replace(",", "", $data[3]); // remove commas in price
+        $description = $data[4];
         
-      log_message("info", "Extracting data from CSV");
-      $data = explode(';', $line[0]);
-      
-      log_message('info', $line[0]);
-      log_message('info', $data[0]);
-      log_message('info', $data[1]);
-      log_message('info', str_replace(',', '', $data[1]));
-      // Insert the data into the database
-      $this->db->insert('items', [
-        'name' => $data[0],
-        // Price can have a comma when it's a thousand or more
-        'unitPrice' => str_replace(',', '', $data[1]),
-      ]);
+        // Check if the format is being followed
+        if (count($data) != 5) {
+            $json['msg'] = "Invalid CSV file format, must follow the following format: Item Name, Item Category, Quantity, Unit Price, Description";
+            $json['status'] = 0;
+            $this->output->set_content_type('application/json')->set_output(json_encode($json));
+            return;
+        }
+        
+        if ($firstItem) {
+            // Check if the first item is the header
+            if ($itemName == "Item Name" && $itemCategory == "Item Category" && $quantity == "Quantity" && $unitPrice == "Unit Price" && $description == "Description") {
+                $firstItem = false;
+                continue;
+            } else {
+                $json['msg'] = "Invalid CSV file format, must follow the following format: Item Name, Item Category, Quantity, Unit Price, Description";
+                $json['status'] = 0;
+                $this->output->set_content_type('application/json')->set_output(json_encode($json));
+                return;
+            }
+        }
+        
+        $category = $this->Category->get($itemCategory);
+
+        if (!$category) {
+            $this->Category->add($itemCategory, ''); // Assuming the category description is empty
+            $category = $this->Category->get($itemCategory);
+        }
+
+        // Insert the data into the database
+        $this->db->insert('items', [
+            'name' => $itemName,
+            'category' => $category->id, // Use the id of the category
+            'quantity' => $quantity,
+            'unitPrice' => $unitPrice,
+            'description' => $description
+        ]);
     }
     
     log_message('info', 'Imported data from CSV file');

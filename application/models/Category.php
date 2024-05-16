@@ -21,8 +21,16 @@ class Category extends CI_Model{
         return TRUE;
     }
     
-    public function get($categoryId){
-        return $this->db->where('id', $categoryId)->get('category')->row();
+    public function get($categoryName){
+        // Convert the input category name to lowercase
+        $categoryName = strtolower($categoryName);
+
+        // Find the category name in the database, case-insensitive
+        $this->db->where('LOWER(name)', $categoryName);
+        $query = $this->db->get('category');
+
+        // If a category is found, return it. Otherwise, return null.
+        return $query->num_rows() > 0 ? $query->row() : null;
     }
     
     public function getCategories(){
