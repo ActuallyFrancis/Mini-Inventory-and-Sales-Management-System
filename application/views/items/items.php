@@ -8,8 +8,9 @@ defined('BASEPATH') OR exit('');
             <!-- sort and co row-->
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="col-sm-2 form-inline form-group-sm">
-                        <button class="btn btn-primary btn-sm" id='createItem'>Add New Item</button>
+                    <div class="col-sm-2 form-inline form-group-sm" style="display:flex;flex-direction:row">
+                        <button class="btn btn-primary btn-sm" id='createItem' style="margin-right: 5px">Add New Item</button>
+                        <button class="btn btn-primary btn-sm" id='createCategory'>Add Category</button>
                     </div>
 
                     <div class="col-sm-3 form-inline form-group-sm">
@@ -79,8 +80,17 @@ defined('BASEPATH') OR exit('');
                         <div class="row">
                             <div class="col-sm-12 form-group-sm">
                                 <label for="itemCategory">Item Category</label>
-                                <input type="text" id="itemCategory" name="itemCategory" placeholder="Item Category" maxlength="80"
-                                       class="form-control" onchange="checkField(this.value, 'itemCategory')">
+                                <?php if (!empty($categories)): ?>
+                                    <select id="itemCategory" name="itemCategory" class="form-control">
+                                        <?php foreach ($categories as $category): ?>
+                                            <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                <?php else: ?>
+                                    <select id="itemCategory" name="itemCategory" class="form-control" disabled>
+                                        <option>No categories available</option>
+                                    </select>
+                                <?php endif; ?>
                                 <span class="help-block errMsg" id="itemCategoryErr"></span>
                             </div>
                         </div>
@@ -123,6 +133,45 @@ defined('BASEPATH') OR exit('');
                     </form><!-- end of form-->
                 </div>
             </div>
+
+            <!--Form to add new category-->
+            <div class="col-sm-4 hidden" id='createNewCategoryDiv'>
+                <div class="well">
+                    <div style="display: flex;">
+                        <h4>Add Category</h4>
+                        <button class="close cancelAddItem" style="text-align:end;flex:auto;">&times;</button><br>
+                    </div>
+                    <form name="addNewCategoryForm" id="addNewCategoryForm" role="form">
+                        <div class="text-center errMsg" id='addCategoryErrMsg'></div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12 form-group-sm">
+                                <label for="categoryName">Category Name</label>
+                                <input type="text" id="categoryName" name="categoryName" placeholder="Category Name" maxlength="80"
+                                       class="form-control" onchange="checkField(this.value, 'categoryNameErr')">
+                                <span class="help-block errMsg" id="categoryNameErr"></span>
+                                
+                                <label for="categoryDesc">Category Description (optional)</label>
+                                <textarea class="form-control" id="categoryDesc" name="categoryDesc" rows='4'
+                                    placeholder="Category Description"></textarea>
+                                
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row text-center">
+                            <div class="col-sm-6 form-group-sm">
+                                <button class="btn btn-primary btn-sm" id="addNewCategory">Add Category</button>
+                            </div>
+
+                            <div class="col-sm-6 form-group-sm">
+                                <button type="reset" id="cancelAddCategory" class="btn btn-danger btn-sm cancelAddCategory" form='addNewCategoryForm'>Cancel</button>
+                            </div>
+                        </div>
+                    </form><!-- end of form-->
+                </div>
+            </div>
+            
             
             <!--- Item list div-->
             <div class="col-sm-12" id="itemsListDiv">
@@ -200,8 +249,6 @@ defined('BASEPATH') OR exit('');
     </div>
 </div>
 <!--end of modal-->
-
-
 
 <!--modal to edit item-->
 <div id="editItemModal" class="modal fade" role="dialog" data-backdrop="static">

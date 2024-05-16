@@ -75,6 +75,20 @@ class Genmod extends CI_Model{
         }
     }
     
+    public function getEmptyStocks(){
+        $q = "SELECT id, name FROM items WHERE quantity = 0";
+        
+        $run_q = $this->db->query($q);
+        
+        if($run_q->num_rows() > 0){
+            return $run_q->result();
+        }
+        
+        else{
+            return FALSE;
+        }
+    }
+    
     /*
     ********************************************************************************************************************************
     ********************************************************************************************************************************
@@ -218,20 +232,6 @@ class Genmod extends CI_Model{
     ********************************************************************************************************************************
     ********************************************************************************************************************************
     */
-    
-    public function getCategories() {
-        $q = "SELECT * FROM categories";
-        
-        $run_q = $this->db->query($q);
-        
-        if($run_q->num_rows() > 0){
-            return $run_q->result();
-        }
-        
-        else{
-            return FALSE;
-        }
-    }
 
     public function createDatabase()
     {
@@ -240,7 +240,7 @@ class Genmod extends CI_Model{
 
         // Check if all tables exist
         $this->db->db_select($dbName);
-        $tables = ['admin', 'eventlog', 'items', 'lk_sess', 'transactions', 'categories'];
+        $tables = ['admin', 'eventlog', 'items', 'lk_sess', 'transactions', 'category'];
         foreach ($tables as $table) {
             if (!$this->db->table_exists($table)) {
                 switch ($table) {
@@ -259,7 +259,7 @@ class Genmod extends CI_Model{
                     case 'transactions':
                         $this->createTransactionsDatabase();
                         break;
-                    case 'categories':
+                    case 'category':
                         $this->createCategoriesDatabase();
                         break;
                 }
@@ -455,6 +455,12 @@ class Genmod extends CI_Model{
                 'null' => FALSE,
                 'default' => date('Y-m-d H:i:s'),
                 'on update' => date('Y-m-d H:i:s')
+            ),
+            'category' => array(
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => TRUE,
+                'null' => FALSE
             )
         );
 
@@ -462,6 +468,8 @@ class Genmod extends CI_Model{
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_key('name');
         $this->dbforge->add_key('code');
+        $this->dbforge->add_key('category');
+        $this->dbforge->add_field('FOREIGN KEY (category) REFERENCES category(id)');
         $this->dbforge->create_table('items', TRUE);
     }
     public function createLkSessDatabase() {
@@ -627,6 +635,6 @@ class Genmod extends CI_Model{
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_key('name');
-        $this->dbforge->create_table('categories', TRUE);
+        $this->dbforge->create_table('category', TRUE);
     }
 }

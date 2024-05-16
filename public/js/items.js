@@ -26,10 +26,25 @@ $(document).ready(function(){
      * Toggle the form to add a new item
      */
     $("#createItem").click(function(){
+        if(!$("#createNewCategoryDiv").hasClass("hidden")){
+            $("#createNewCategoryDiv").toggleClass('hidden');
+        }
+
         $("#itemsListDiv").toggleClass("col-sm-8", "col-sm-12");
         $("#createNewItemDiv").toggleClass('hidden');
         $("#itemName").focus();
     });
+    
+    $("#createCategory").click(function(){
+        // Replace itemsListDiv, but only if it's visible
+        if(!$("#createNewItemDiv").hasClass("hidden")){
+            $("#createNewItemDiv").toggleClass('hidden');
+        }
+
+        $("#itemsListDiv").toggleClass("col-sm-8", "col-sm-12");
+        $("#createNewCategoryDiv").toggleClass('hidden');
+        $("#categoryName").focus();
+    })
     
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +58,13 @@ $(document).ready(function(){
         //reset and hide the form
         document.getElementById("addNewItemForm").reset();//reset the form
         $("#createNewItemDiv").addClass('hidden');//hide the form
+        $("#itemsListDiv").attr('class', "col-sm-12");//make the table span the whole div
+    });
+
+    $(".cancelAddCategory").click(function(){
+        //reset and hide the form
+        document.getElementById("addNewCategoryForm").reset();//reset the form
+        $("#createNewCategoryDiv").addClass('hidden');//hide the form
         $("#itemsListDiv").attr('class', "col-sm-12");//make the table span the whole div
     });
     
@@ -150,7 +172,54 @@ $(document).ready(function(){
             }
         });
     });
-    
+
+
+    $("#addNewCategory").click(function(e) {
+        e.preventDefault();
+        
+        var categoryName = $("#categoryName").val();
+        var categoryDescription = $("#categoryDescription").val();
+        
+        if(!categoryName){
+            $("#categoryNameErr").text("required");
+            return;
+        }
+
+        displayFlashMsg("Adding Categories '"+categoryName+"'", "fa fa-spinner faa-spin animated", '', '');
+
+        $.ajax({
+            type: "post",
+            url: appRoot+"items/addcategory",
+            data: {categoryName:categoryName, categoryDescription:categoryDescription},
+            
+            success: function(returnedData){
+                if(returnedData.status === 1){
+                    changeFlashMsgContent(returnedData.msg, "text-success", "", 1500);
+                    document.getElementById("addNewCategoryForm").reset();
+                    $.ajax({
+                        type: 'get',
+                        url: appRoot+"items/getcategoriesextern",
+                        success: function(returnedData){
+                            var $dropdown = $('#itemCategory');
+                            $dropdown.empty();
+                            $.each(returnedData.categories, function() {
+                                $dropdown.append($('<option></option>').attr('value', this.id).text(this.name));
+                            });
+                        }
+                    });
+                }
+                
+                else{
+                    changeFlashMsgContent(returnedData.msg, "text-danger", "", "");
+                }
+            },
+            
+            error: function(){
+                changeFlashMsgContent("Unable to process your request at this time. Please try again later", "text-danger", "", "");
+            }
+        });
+        
+    });
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

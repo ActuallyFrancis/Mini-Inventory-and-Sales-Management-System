@@ -34,7 +34,8 @@
                         <input type="hidden" value="<?=$get->id?>" class="curItemId">
                         <th class="itemSN"><?=$sn?>.</th>
                         <td><span id="itemName-<?=$get->id?>"><?=$get->name?></span></td>
-                        <td><span id="itemCat-<?=$get->id?>"><?=$get->category?></span></td>
+                        <!-- category here is an id, so get the reference -->
+                        <td><span id="itemCat-<?=$get->id?>"><?=$this->genmod->getTableCol('category', 'name', 'id', $get->category)?></span></td>
                         <td>
                             <span id="itemDesc-<?=$get->id?>" data-toggle="tooltip" title="<?=$get->description?>" data-placement="auto">
                                 <?=word_limiter($get->description, 15)?>

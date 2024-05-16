@@ -124,6 +124,13 @@ defined('BASEPATH') or exit('');
           <li class="dropdown">
             <a>
               Total Earned Today: <b>₱<span id="totalEarnedToday"></span></b>
+                <?php if ($this->genmod->getEmptyStocks()) : ?>
+                  <span class="hidden-xs"> | </span>
+                  <span class="visible-xs"><br></span>
+                  <!-- Check database if there is any item with 0 stock -->
+                        <span class="hidden-xs">There are items with no stock!</span>
+                        <span class="visible-xs">There are items with no stock!</span>
+                <?php endif; ?>
             </a>
           </li>
           <li class="dropdown">
@@ -133,7 +140,12 @@ defined('BASEPATH') or exit('');
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-header text-center">
-                <strong>Account</strong>
+                  <?php if ($this->genmod->getEmptyStocks()) : ?>
+                    <strong>Items with no stock:</strong>
+                      <?php foreach ($this->genmod->getEmptyStocks() as $stock): ?>
+                        <span class="badge bg-danger"><?= $stock->name ?></span>
+                    <?php endforeach; ?>
+                  <?php endif ?>
               </li>
               <li class="divider"></li>
               <!---<li>

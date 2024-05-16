@@ -17,7 +17,7 @@ class Items extends CI_Controller
     $this->genlib->checkLogin();
     //$this->genlib->superOnly();
 
-    $this->load->model(['item']);
+    $this->load->model(['item', 'category']);
   }
 
   /**
@@ -25,10 +25,10 @@ class Items extends CI_Controller
    */
   public function index()
   {
-    $data['pageContent'] = $this->load->view('items/items', '', TRUE);
-    $data['pageTitle'] = "Items";
-
-    $this->load->view('main', $data);
+      $data['categories'] = $this->category->getCategories();
+      $data['pageContent'] = $this->load->view('items/items', $data, TRUE);
+      $data['pageTitle'] = "Items";
+      $this->load->view('main', $data);
   }
 
   /*
@@ -87,7 +87,53 @@ class Items extends CI_Controller
     ********************************************************************************************************************************
     */
 
+    public function addCategory()
+    {
+        $this->genlib->ajaxOnly();
 
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_error_delimiters('', '');
+
+        $this->form_validation->set_rules('categoryName', 'Categories name', ['required', 'trim', 'max_length[80]', 'is_unique[category.name]'], ['required' => "required"]);
+
+        if ($this->form_validation->run() !== FALSE) {
+            $this->db->trans_start();
+            
+            $categName = set_value('categoryName');
+            $categDesc = set_value('categoryDescription');
+            
+            $categoryData = $this->category->add($categName, $categDesc);
+            //insert into eventlog
+            //function header: addevent($event, $eventRowId, $eventDesc, $eventTable, $staffId)
+            $desc = "Creation of new category '{$categName}'";
+            $categoryData ? $this->genmod->addevent("Creation of new category", $categoryData, $desc, "category", $this->session->admin_id) : "";
+            $this->db->trans_complete();
+            
+            $json = $this->db->trans_status() !== FALSE ?
+                ['status' => 1, 'msg' => "Categories successfully added"]
+                :
+                ['status' => 0, 'msg' => "Oops! Unexpected server error! Please contact administrator for help. Sorry for the embarrassment"];
+        } else {
+            $json = $this->form_validation->error_array(); //get an array of all errors
+
+            $json['msg'] = "One or more required fields are empty or not correctly filled";
+            $json['status'] = 0;
+        }
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($json));
+    }
+    
+    public function getCategoriesExtern() {
+        $this->genlib->ajaxOnly();
+        
+        $categories = $this->category->getCategories();
+        
+        $json['status'] = 1;
+        $json['categories'] = $categories;
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($json));
+    }
 
   public function add()
   {
@@ -105,7 +151,7 @@ class Items extends CI_Controller
     );
     $this->form_validation->set_rules('itemQuantity', 'Item quantity', ['required', 'trim', 'numeric'], ['required' => "required"]);
     $this->form_validation->set_rules('itemPrice', 'Item Price', ['required', 'trim', 'numeric'], ['required' => "required"]);
-    $this->form_validation->set_rules('itemCategory', 'Item Category', ['required', 'trim'], ['required' => "required"]);
+    $this->form_validation->set_rules('itemCategory', 'Item Categories', ['required', 'trim'], ['required' => "required"]);
 
     if ($this->form_validation->run() !== FALSE) {
       $this->db->trans_start(); //start transaction
