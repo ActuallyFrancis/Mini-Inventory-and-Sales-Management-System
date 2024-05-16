@@ -240,7 +240,7 @@ class Genmod extends CI_Model{
 
         // Check if all tables exist
         $this->db->db_select($dbName);
-        $tables = ['admin', 'eventlog', 'items', 'lk_sess', 'transactions', 'category'];
+        $tables = ['category', 'admin', 'eventlog', 'items', 'lk_sess', 'transactions'];
         foreach ($tables as $table) {
             if (!$this->db->table_exists($table)) {
                 switch ($table) {
