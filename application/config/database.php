@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 //details for mysql
 $db['mysql'] = array(
-	'dsn'	=> 'mysql:hostname=localhost; dbname=1410inventory',
+	'dsn'	=> 'mysql:hostname=localhost',
 	'hostname' => '',
 	'username' => 'root',
 	'password' => '',
@@ -95,7 +95,6 @@ $db['mysql'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
 
 //details for sqlite
 $db['sqlite'] = array(

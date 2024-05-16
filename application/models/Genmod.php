@@ -219,26 +219,57 @@ class Genmod extends CI_Model{
     ********************************************************************************************************************************
     */
     
-    public function createDatabase() {
-        $this->load->dbforge();
-        $dbName = '1410database';
-
-        // Check if the database exists
-        $query = $this->db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{$dbName}'");
-
-        if ($query->num_rows() == 0) {
-            // Database does not exist, create it
-            $this->dbforge->create_database($dbName);
-            $this->createAdminDatabaseIfNotExists();
-            $this->createEventLogDatabaseIfNotExists();
-            $this->createItemsDatabaseIfNotExists();
-            $this->createLkSessDatabaseIfNotExists();
-            $this->createTransactionsDatabaseIfNotExists();
+    public function getCategories() {
+        $q = "SELECT * FROM categories";
+        
+        $run_q = $this->db->query($q);
+        
+        if($run_q->num_rows() > 0){
+            return $run_q->result();
+        }
+        
+        else{
+            return FALSE;
         }
     }
-    public function createAdminDatabaseIfNotExists() {
+
+    public function createDatabase()
+    {
         $this->load->dbforge();
-        
+        $dbName = '1410inventory';
+
+        // Check if all tables exist
+        $this->db->db_select($dbName);
+        $tables = ['admin', 'eventlog', 'items', 'lk_sess', 'transactions', 'categories'];
+        foreach ($tables as $table) {
+            if (!$this->db->table_exists($table)) {
+                switch ($table) {
+                    case 'admin':
+                        $this->createAdminDatabase();
+                        break;
+                    case 'eventlog':
+                        $this->createEventLogDatabase();
+                        break;
+                    case 'items':
+                        $this->createItemsDatabase();
+                        break;
+                    case 'lk_sess':
+                        $this->createLkSessDatabase();
+                        break;
+                    case 'transactions':
+                        $this->createTransactionsDatabase();
+                        break;
+                    case 'categories':
+                        $this->createCategoriesDatabase();
+                        break;
+                }
+            }
+        }
+    }
+    
+    public function createAdminDatabase() {
+        $this->load->dbforge();
+
         $fields = array(
             'id' => array(
                 'type' => 'INT',
@@ -310,33 +341,33 @@ class Genmod extends CI_Model{
                 'default' => '0'
             )
         );
-        
+
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_key('email');
         $this->dbforge->create_table('admin', TRUE);
-        
+
         // start add first user
         $data = array(
             'first_name' => 'Admin',
             'last_name' => 'Admin',
-            'email' => 'demo@gmail.com',
+            'email' => 'admin@gmail.com',
             'mobile1' => '12345678901',
             'mobile2' => '12345678901',
             'password' => password_hash('password', PASSWORD_DEFAULT),
-            'role' => 'admin',
+            'role' => 'Super',
             'created_on' => date('Y-m-d H:i:s'),
             'last_login' => date('Y-m-d H:i:s'),
             'last_seen' => date('Y-m-d H:i:s'),
             'last_edited' => date('Y-m-d H:i:s')
         );
-        
+
         $this->db->insert('admin', $data);
         // end add first user
     }
-    public function createEventLogDatabaseIfNotExists() {
+    public function createEventLogDatabase() {
         $this->load->dbforge();
-        
+
         $fields = array(
             'id' => array(
                 'type' => 'BIGINT',
@@ -372,18 +403,18 @@ class Genmod extends CI_Model{
             'eventTime' => array(
                 'type' => 'TIMESTAMP',
                 'null' => FALSE,
-                'default' => 'CURRENT_TIMESTAMP'
+                'default' => date('Y-m-d H:i:s')
             )
         );
-        
+
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('eventlog', TRUE);
-        
+
     }
-    public function createItemsDatabaseIfNotExists() {
+    public function createItemsDatabase() {
         $this->load->dbforge();
-        
+
         $fields = array(
             'id' => array(
                 'type' => 'BIGINT',
@@ -422,19 +453,20 @@ class Genmod extends CI_Model{
             'lastUpdated' => array(
                 'type' => 'TIMESTAMP',
                 'null' => FALSE,
-                'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'default' => date('Y-m-d H:i:s'),
+                'on update' => date('Y-m-d H:i:s')
             )
         );
-        
+
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_key('name');
         $this->dbforge->add_key('code');
         $this->dbforge->create_table('items', TRUE);
     }
-    public function createLkSessDatabaseIfNotExists() {
+    public function createLkSessDatabase() {
         $this->load->dbforge();
-        
+
         $fields = array(
             'id' => array(
                 'type' => 'VARCHAR',
@@ -457,12 +489,12 @@ class Genmod extends CI_Model{
                 'null' => FALSE
             )
         );
-        
+
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('lk_sess', TRUE);
     }
-    public function createTransactionsDatabaseIfNotExists()
+    public function createTransactionsDatabase()
     {
         $this->load->dbforge();
 
@@ -545,7 +577,8 @@ class Genmod extends CI_Model{
             'lastUpdated' => array(
                 'type' => 'TIMESTAMP',
                 'null' => FALSE,
-                'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'default' => date('Y-m-d H:i:s'),
+                'on update' => date('Y-m-d H:i:s')
             ),
             'cancelled' => array(
                 'type' => 'CHAR',
@@ -559,5 +592,41 @@ class Genmod extends CI_Model{
         $this->dbforge->add_key('transId', TRUE);
         $this->dbforge->add_key('ref');
         $this->dbforge->create_table('transactions', TRUE);
+    }
+    public function createCategoriesDatabase() {
+        $this->load->dbforge();
+
+        $fields = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '50',
+                'null' => FALSE
+            ),
+            'description' => array(
+                'type' => 'TEXT',
+                'null' => TRUE
+            ),
+            'dateAdded' => array(
+                'type' => 'DATETIME',
+                'null' => FALSE
+            ),
+            'lastUpdated' => array(
+                'type' => 'TIMESTAMP',
+                'null' => FALSE,
+                'default' => date('Y-m-d H:i:s'),
+                'on update' => date('Y-m-d H:i:s')
+            )
+        );
+
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->add_key('name');
+        $this->dbforge->create_table('categories', TRUE);
     }
 }

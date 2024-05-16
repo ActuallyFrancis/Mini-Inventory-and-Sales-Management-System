@@ -70,6 +70,16 @@ CREATE TABLE `eventlog` (
 
 -- --------------------------------------------------------
 
+    
+    -- Handcrafted SQL --
+    CREATE TABLE `category` (
+    `id` bigint(20) UNSIGNED NOT NULL,
+    `name` varchar(50) NOT NULL,
+    `description` text,
+    `dateAdded` datetime NOT NULL,
+    `lastUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    
 --
 -- Table structure for table `items`
 --
@@ -82,6 +92,7 @@ CREATE TABLE `items` (
   `unitPrice` decimal(10,2) NOT NULL,
   `quantity` int(6) NOT NULL,
   `dateAdded` datetime NOT NULL,
+  `category` bigint(20) UNSIGNED NOT NULL,
   `lastUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -148,8 +159,9 @@ ALTER TABLE `eventlog`
 ALTER TABLE `items`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`),
-  ADD UNIQUE KEY `code` (`code`);
-
+  ADD UNIQUE KEY `code` (`code`),
+  ADD CONSTRAINT `items_ibfk_1` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+    
 --
 -- Indexes for table `transactions`
 --

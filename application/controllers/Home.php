@@ -18,10 +18,8 @@ class Home extends CI_Controller
       redirect('dashboard');
     }
     
-    // Generate the SQL Database if it doesn't exist
     $this->load->dbforge();
     $this->load->model('genmod');
-    
     $this->genmod->createDatabase();
   }
 

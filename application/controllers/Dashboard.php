@@ -14,6 +14,9 @@ class Dashboard extends CI_Controller
   {
     parent::__construct();
 
+      $this->load->dbforge();
+      $this->load->model('genmod');
+      $this->genmod->createDatabase();
     $this->genlib->checkLogin();
 
     $this->load->model(['item', 'transaction', 'analytic']);

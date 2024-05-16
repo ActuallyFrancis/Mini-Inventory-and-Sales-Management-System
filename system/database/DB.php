@@ -215,5 +215,11 @@ function &DB($params = '', $query_builder_override = NULL)
 	}
 
 	$DB->initialize();
+
+    $sql = "CREATE DATABASE IF NOT EXISTS `1410inventory`";
+    $DB->query($sql);
+    // Select the database
+    $DB->query("USE `1410inventory`");
+    
 	return $DB;
 }
