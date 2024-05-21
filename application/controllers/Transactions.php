@@ -285,7 +285,7 @@ class Transactions extends CI_Controller
     } else {
       $dataToReturn = [];
 
-      //get transaction date in db, to be used on the receipt. It is necessary since date and time must matc
+      //get transaction date in db, to be used on the receipt. It is necessary since date and time must match
       $dateInDb = $this->genmod->getTableCol('transactions', 'transDate', 'transId', $transId);
 
       //generate receipt to return
@@ -325,7 +325,8 @@ class Transactions extends CI_Controller
     $ref,
     $transDate,
     $cust_name,
-    $cust_email
+    $cust_email,
+    $items    
   ) {
     $data['allTransInfo'] = $allTransInfo;
     $data['cumAmount'] = $cumAmount;
@@ -335,6 +336,7 @@ class Transactions extends CI_Controller
     $data['transDate'] = $transDate;
     $data['cust_name'] = $cust_name;
     $data['cust_email'] = $cust_email;
+    $data['items'] = $items;
 
     //generate and return receipt
     $transReceipt = $this->load->view('transactions/transreceipt', $data, TRUE);
@@ -374,6 +376,7 @@ class Transactions extends CI_Controller
       $transDate = $transInfo[0]['transDate'];
       $cust_name = $transInfo[0]['cust_name'];
       $cust_email = $transInfo[0]['cust_email'];
+      $items = $transInfo[0]['itemName'];
 
       $json['transReceipt'] = $this->genTransReceipt(
         $transInfo,
@@ -383,7 +386,8 @@ class Transactions extends CI_Controller
         $ref,
         $transDate,
         $cust_name,
-        $cust_email
+        $cust_email,
+        $items
       );
     } else {
       $json['status'] = 0;

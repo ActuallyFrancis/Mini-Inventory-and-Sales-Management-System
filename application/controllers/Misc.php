@@ -73,12 +73,22 @@ class Misc extends CI_Controller
     $delimiter = ",";
     $newline = "\r\n";
     $enclosure = '"';
-    $data = $this->dbutil->csv_from_result($this->db->get('items'), $delimiter, $newline, $enclosure);
-    
-    $file_path = BASEPATH . "sqlite/1410inventory.csv";
-    write_file($file_path, $data);
-    
-    $this->output->set_content_type('application/csv')->set_output(file_get_contents($file_path));
+
+      // Query to get the data in the required order and column names
+      $this->db->select('name as "Item Name", category as "Item Category", quantity as "Quantity", unitPrice as "Unit Price", description as "Description"');
+      $query = $this->db->get('items');
+
+      // Generate CSV data from the query result
+      $data = $this->dbutil->csv_from_result($query, $delimiter, $newline, $enclosure);
+
+      // Define the file path
+      $file_path = BASEPATH . "sqlite/1410inventory.csv";
+
+      // Write the data to the file
+      write_file($file_path, $data);
+
+      // Output the CSV file with appropriate headers
+      $this->output->set_content_type('application/csv')->set_output(file_get_contents($file_path));
   }
   
 

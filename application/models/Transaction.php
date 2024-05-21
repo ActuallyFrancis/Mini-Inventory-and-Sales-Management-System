@@ -35,7 +35,7 @@ class Transaction extends CI_Model {
             $q = "SELECT transactions.ref, transactions.totalMoneySpent, transactions.staffId,
                 transactions.transDate, transactions.lastUpdated, transactions.amountTendered, transactions.changeDue,
                 admin.first_name || ' ' || admin.last_name AS 'staffName', SUM(transactions.quantity) AS 'quantity',
-                transactions.cust_name, transactions.cust_email, transactions.cancelled
+                transactions.cust_name, transactions.cust_email, transactions.cancelled, transactions.itemName
                 FROM transactions
                 LEFT OUTER JOIN admin ON transactions.staffId = admin.id
                 GROUP BY ref
@@ -49,11 +49,12 @@ class Transaction extends CI_Model {
                 GROUP_CONCAT(DISTINCT transactions.staffId) AS staffId, GROUP_CONCAT(DISTINCT transactions.transDate) AS transDate, 
                 GROUP_CONCAT(DISTINCT transactions.lastUpdated) AS lastUpdated, GROUP_CONCAT(DISTINCT transactions.amountTendered) AS amountTendered, GROUP_CONCAT(DISTINCT transactions.cancelled) AS cancelled,
                 GROUP_CONCAT(DISTINCT transactions.changeDue) AS changeDue, CONCAT_WS(" ", GROUP_CONCAT(DISTINCT admin.first_name), GROUP_CONCAT(DISTINCT admin.last_name)) as "staffName",
-                GROUP_CONCAT(DISTINCT transactions.cust_name) AS cust_name, GROUP_CONCAT(DISTINCT transactions.cust_email) AS cust_email');
+                GROUP_CONCAT(DISTINCT transactions.cust_name) AS cust_name, GROUP_CONCAT(DISTINCT transactions.cust_email) AS cust_email, GROUP_CONCAT(DISTINCT items.name) AS itemName');
             
             $this->db->select_sum('transactions.quantity');
             
             $this->db->join('admin', 'transactions.staffId = admin.id', 'LEFT');
+            $this->db->join('items', 'transactions.itemCode = items.code', 'LEFT');
             $this->db->limit($limit, $start);
             $this->db->group_by('ref');
             $this->db->order_by($orderBy, $orderFormat);
