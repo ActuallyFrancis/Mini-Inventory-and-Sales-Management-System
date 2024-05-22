@@ -27,7 +27,20 @@
                     <th><?= $sn ?>.</th>
                     <td><a class="pointer vtr" title="Click to view receipt"><?= $get->ref ?></a></td>
                     <td><?= $get->quantity ?></td>
-                    <td><?= $get->itemName ?></td>
+                    <td>
+                        <?php
+                        $items = $this->transaction->getTransInfo($get->ref);
+                        $itemNames = [];
+                                                 
+                        foreach($items as $item){
+                            $itemNames[] = $item['itemName'];
+                        }
+                        
+                        echo implode(", ", array_map(function($item, $count) {
+                            return "(" . $count . "x) " . $item;
+                        }, $itemNames, array_column($items, 'quantity')));
+                        ?>
+                    </td>
                     <td>₱<?= number_format($get->totalMoneySpent, 2) ?></td>
                     <td>₱<?= number_format($get->amountTendered, 2) ?></td>
                     <td>₱<?= number_format($get->changeDue, 2) ?></td>
