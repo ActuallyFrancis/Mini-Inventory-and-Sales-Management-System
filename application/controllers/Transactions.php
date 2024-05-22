@@ -326,7 +326,6 @@ class Transactions extends CI_Controller
     $transDate,
     $cust_name,
     $cust_email,
-    $items    
   ) {
     $data['allTransInfo'] = $allTransInfo;
     $data['cumAmount'] = $cumAmount;
@@ -336,7 +335,6 @@ class Transactions extends CI_Controller
     $data['transDate'] = $transDate;
     $data['cust_name'] = $cust_name;
     $data['cust_email'] = $cust_email;
-    $data['items'] = $items;
 
     //generate and return receipt
     $transReceipt = $this->load->view('transactions/transreceipt', $data, TRUE);
@@ -376,7 +374,6 @@ class Transactions extends CI_Controller
       $transDate = $transInfo[0]['transDate'];
       $cust_name = $transInfo[0]['cust_name'];
       $cust_email = $transInfo[0]['cust_email'];
-      $items = $transInfo[0]['itemName'];
 
       $json['transReceipt'] = $this->genTransReceipt(
         $transInfo,
@@ -387,7 +384,6 @@ class Transactions extends CI_Controller
         $transDate,
         $cust_name,
         $cust_email,
-        $items
       );
     } else {
       $json['status'] = 0;

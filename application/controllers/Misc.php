@@ -73,10 +73,12 @@ class Misc extends CI_Controller
     $delimiter = ",";
     $newline = "\r\n";
     $enclosure = '"';
-
-      // Query to get the data in the required order and column names
-      $this->db->select('name as "Item Name", category as "Item Category", quantity as "Quantity", unitPrice as "Unit Price", description as "Description"');
-      $query = $this->db->get('items');
+    
+      // Join the items table with the item_category table
+      $this->db->select('items.name as "Item Name", category.name as "Item Category", items.quantity as "Quantity", items.unitPrice as "Unit Price", items.description as "Description"');
+      $this->db->from('items');
+      $this->db->join('category', 'items.category = category.id');
+      $query = $this->db->get();
 
       // Generate CSV data from the query result
       $data = $this->dbutil->csv_from_result($query, $delimiter, $newline, $enclosure);
